@@ -75,10 +75,19 @@ WSGI_APPLICATION = 'unisocar.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'OPTIONS': {
+            'read_default_file': 'c:\wamp64\bin\mysql\mysql5.7.31\data\'
+        }
     }
 }
+
+host = DESKTOP-A4HP610
+database = primeiro_database
+user = root
+password = public_key.pem
+
+
 
 
 # Password validation
