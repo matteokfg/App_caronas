@@ -1,14 +1,14 @@
 from django.conf import settings
 from django.db import models
 from django.utils import timezone
-import localflavor
+from localflavor.br.models import BRCPFField
 
 #<---------------------------------- model user ------------------------------------------>
 
 class Usuario(models.Model):
 
 
-    cpf_user = localflavor.br.models.BRCPFField(
+    cpf_user = BRCPFField(
         verbose_name="CPF",
         help_text="Coluna com CPF do usuario",
     )
