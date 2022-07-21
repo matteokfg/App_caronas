@@ -62,7 +62,7 @@ class Usuario(models.Model):
 
     #models.?   ->  senha
 
-    motorista = models.BooleanField()
+    e_motorista = models.BooleanField()
 
     def __str__(self):
         return self.nome_user
