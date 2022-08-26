@@ -1,35 +1,24 @@
-from django.conf import settings
 from django.db import models
+from django.conf import settings
 from django.utils import timezone
+# extensao do usuario django
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+# field do cpf no banco de dados no django
 from localflavor.br.models import BRCPFField
 
 #<---------------------------------- model user ------------------------------------------>
 
-class Usuario(models.Model):
 
+class Usuario(models.Model):
+    # Extensao do usuario padrao ja existente no django
+    # faz a relacao de um para um entre o model inicial do django de usuarios com esse que adiciona mais campos relacionados ao usuario
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     cpf_user = BRCPFField(
         verbose_name="CPF",
         help_text="Coluna com CPF do usuario",
-    )
-    # cpf_user = models.PositiveBigIntegerField(
-    #     MaxValueValidator=10000000000,
-    #     unique=True,
-    #     one_to_many=True,
-    #     verbose_name="CPF",
-    #     help_text="Coluna com CPF do usuario"
-    # )
-
-    nome_user = models.CharField(
-        max_length=100,
-        verbose_name="Nome",
-        help_text="Coluna com o nome do usuario",
-    )
-
-    email_user = models.EmailField(
-        max_length=254,
-        verbose_name="Email",
-        help_text="Coluna com o email do usuario",
     )
 
 
@@ -38,7 +27,6 @@ class Usuario(models.Model):
         ('F', 'Funcionario'),
         ('T', 'Terceiro'),
     )
-
 
     relation_with_uniso_user = models.CharField(
         max_length=1,
@@ -60,12 +48,20 @@ class Usuario(models.Model):
         help_text="Coluna com o genero do usuario",
     )
 
-    #models.?   ->  senha
-
     e_motorista = models.BooleanField()
 
     def __str__(self):
         return self.nome_user
+
+# a tabela Usuario vai ser atualizada automaticamente quando o User for atualizado
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Usuario.objects.create(user=instance)
+# lugar aonde vi essas funcoes: https://simpleisbetterthancomplex.com/tutorial/2016/07/22/how-to-extend-django-user-model.html#onetoone
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    instance.profile.save()
 
 #<---------------------------------- fim model user -------------------------------------->
 #<---------------------------------- model motorista ------------------------------------->
@@ -79,24 +75,18 @@ class Motorista(models.Model):
         help_text="Coluna com o id do usuario que e motorista",
     )
 
-    # if user_id.motorista:
-    #     # photo_car = models.ImageField(
 
-    #     # )       #-> fotos(cnh, carro, documento_uniso)
+    # photo_car = models.FileField(
+    ## os arquivos nao vao ser salvos no BD, ver onde tem media_root e media_url
+    #   upload_to=#MEDIA_ROOT
+    ## o BD vai apenas salvar o caminho para o arquivo
+    # )
 
-    #     # photo_CNH = models.ImageField(
-
-    #     # )       #-> fotos(cnh, carro, documento_uniso)
-
-    #     # photo_doc = models.ImageField(
-
-    #     # )       #-> fotos(cnh, carro, documento_uniso)
-
-    #     placa = models.CharField(
-    #         max_length=9,
-    #         verbose_name="Placa",
-    #         help_text="Coluna com a placa do carro da carona, sendo padrao: 'XXX-0000'.",
-    #     )         #->   placa
+    placa = models.CharField(
+        max_length=9,
+        verbose_name="Placa",
+        help_text="Coluna com a placa do carro da carona, sendo padrao: 'XXX-0000'.",
+    )
 
     def __str__(self):
         return self.user_id
@@ -114,10 +104,10 @@ class Carona(models.Model):
         help_text="Coluna com o motorista da carona",
         )
 
-#     # location_now =           | localizacao atual do carro
-#     # location_to =            | destino da carona
+    # location_inicial =           | localizacao inicial do carro
+    # location_to =            | destino da carona
 
-#     placa = NAO PRECISA, ja vai estar conactado palo usuario(motorista)
+
 
     class Lotacao(models.IntegerChoices):
         MAIS_UM = 1,
@@ -139,6 +129,12 @@ class Carona(models.Model):
         default=timezone.now,
         verbose_name="Data",
         help_text="Data da carona",
+    )
+
+    duration_carona = models.DurationField(
+        # o tempo vai ser guardado em milisegundos
+        verbose_name="Duracao",
+        help_text="Coluna com a duracao da carona(ms)",
     )
 
     def __str__(self):

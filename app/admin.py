@@ -1,3 +1,9 @@
 from django.contrib import admin
+from .models import (
+    Usuario,
+    Carona,
+)
 
-# Register your models here.
+
+admin.site.register(Usuario)
+admin.site.register(Carona)
