@@ -1,3 +1,4 @@
+import time
 from django.db import models
 from django.conf import settings
 from django.utils import timezone
@@ -131,8 +132,15 @@ class Carona(models.Model):
         help_text="Data da carona",
     )
 
-    duration_carona = models.DurationField(
-        # o tempo vai ser guardado em milisegundos
+    duration_carona = models.DecimalField(
+        # o tempo vai ser guardado em segundos (decimal)
+
+        # start = time.time() #roda quando ocorre o inicio da carona
+        # end = time.time() #roda quadno ocorre o fim da carona 
+        # sec = start - end #calculo da duracao da carona
+
+        max_digits=7,
+        decimal_places=1,
         verbose_name="Duracao",
         help_text="Coluna com a duracao da carona(ms)",
     )
