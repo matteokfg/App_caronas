@@ -1,4 +1,3 @@
-import time
 from django.db import models
 from django.conf import settings
 from django.utils import timezone
@@ -12,13 +11,19 @@ from localflavor.br.models import BRCPFField
 #<---------------------------------- model user ------------------------------------------>
 
 
-class Usuario(models.Model):
+class Profile_usuario(models.Model):
     # Extensao do usuario padrao ja existente no django
     # faz a relacao de um para um entre o model inicial do django de usuarios com esse que adiciona mais campos relacionados ao usuario
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(
+        User, 
+        on_delete=models.PROTECT,
+        verbose_name="user_fk",
+        help_text="Chave estrangeira conectando o user do django ao perfil do usuario",
+    )
 
     cpf_user = BRCPFField(
-        verbose_name="CPF",
+        primary_key=True,
+        verbose_name="CPF_pk",
         help_text="Coluna com CPF do usuario",
     )
 
@@ -49,16 +54,18 @@ class Usuario(models.Model):
         help_text="Coluna com o genero do usuario",
     )
 
-    e_motorista = models.BooleanField()
+    ativo = models.BooleanField()
+
+    eh_motorista = models.BooleanField()
 
     def __str__(self):
-        return self.nome_user
+        return self.user
 
 # a tabela Usuario vai ser atualizada automaticamente quando o User for atualizado
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
-        Usuario.objects.create(user=instance)
+        Profile_usuario.objects.create(user=instance)
 # lugar aonde vi essas funcoes: https://simpleisbetterthancomplex.com/tutorial/2016/07/22/how-to-extend-django-user-model.html#onetoone
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
@@ -69,9 +76,9 @@ def save_user_profile(sender, instance, **kwargs):
 
 class Motorista(models.Model):
 
-    user_id = models.ForeignKey(
-        Usuario,
-        on_delete=models.CASCADE,
+    user_id = models.OneToOneField(
+        Profile_usuario,
+        on_delete=models.PROTECT,
         verbose_name="ID",
         help_text="Coluna com o id do usuario que e motorista",
     )
@@ -96,14 +103,14 @@ class Motorista(models.Model):
 #<---------------------------------- model carona ---------------------------------------->
 
 class Carona(models.Model):
+    """Tabela que vai guardar os atributos do evento da carona"""
     
-    
-    user_motorista = models.ForeignKey(
-        Usuario,
-        on_delete=models.CASCADE,
+    user_motorista = models.OneToOneField(
+        User,
+        on_delete=models.PROTECT,
         verbose_name="Usuario",
         help_text="Coluna com o motorista da carona",
-        )
+    )
 
     # location_inicial =           | localizacao inicial do carro
     # location_to =            | destino da carona
@@ -126,19 +133,23 @@ class Carona(models.Model):
         help_text="Coluna com o numero da lotacao do carro da carona",
     )
 
-    date_carona = models.DateTimeField(
+    date_inicial_carona = models.DateTimeField(
         default=timezone.now,
-        verbose_name="Data",
-        help_text="Data da carona",
+        verbose_name="Dat   a de inicio",
+        help_text="Data e hora iniciais da carona",
     )
 
+    date_final_carona = models.DateTimeField(
+        default=timezone.now,
+        verbose_name="Data final",
+        help_text="Data e hora finais da carona",
+    )
+
+    @property
     duration_carona = models.DecimalField(
         # o tempo vai ser guardado em segundos (decimal)
 
-        # start = time.time() #roda quando ocorre o inicio da carona
-        # end = time.time() #roda quadno ocorre o fim da carona 
-        # sec = start - end #calculo da duracao da carona
-
+        default= date_final_carona - date_inicial_carona,
         max_digits=7,
         decimal_places=1,
         verbose_name="Duracao",
@@ -146,7 +157,7 @@ class Carona(models.Model):
     )
 
     def __str__(self):
-        return f"Carona feita por {self.user_motorista}, na data {self.date_carona}"
+        return f"Carona feita por {self.user_motorista}, na data {self.date_inicial_carona}, durando {self.duration_carona}."
 
 #<---------------------------- fim model carona ---------------------------------------->
 
