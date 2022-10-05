@@ -91,7 +91,8 @@ class Motorista(models.Model):
     # )
 
     placa = models.CharField(
-        max_length=9,
+        default='AAA-0000',
+        max_length=8,
         verbose_name="Placa",
         help_text="Coluna com a placa do carro da carona, sendo padrao: 'XXX-0000'.",
     )
@@ -146,18 +147,17 @@ class Carona(models.Model):
     )
 
     @property
-    duration_carona = models.DecimalField(
+    def carona_duration(self):
         # o tempo vai ser guardado em segundos (decimal)
 
-        default= date_final_carona - date_inicial_carona,
-        max_digits=7,
-        decimal_places=1,
-        verbose_name="Duracao",
-        help_text="Coluna com a duracao da carona(ms)",
-    )
+        return self.date_final_carona - self.date_inicial_carona
+        #max_digits=7,
+        #decimal_places=1,
+        #verbose_name="Duracao",
+        #help_text="Coluna com a duracao da carona(ms)"
 
     def __str__(self):
-        return f"Carona feita por {self.user_motorista}, na data {self.date_inicial_carona}, durando {self.duration_carona}."
+        return f"Carona feita por {self.user_motorista}, na data {self.date_inicial_carona}, durando {self.carona_duration()}."
 
 #<---------------------------- fim model carona ---------------------------------------->
 
