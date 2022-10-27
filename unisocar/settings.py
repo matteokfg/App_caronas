@@ -82,7 +82,7 @@ DATABASES = {
     }
 }
 
-host = DESKTOP-A4HP610
+
 database = primeiro_database
 user = root
 password = public_key.pem
