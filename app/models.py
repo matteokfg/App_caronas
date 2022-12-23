@@ -54,9 +54,9 @@ class Profile_usuario(models.Model):
         help_text="Coluna com o genero do usuario",
     )
 
-    ativo = models.BooleanField()
+    ativo = models.BooleanField(null=True)
 
-    eh_motorista = models.BooleanField()
+    eh_motorista = models.BooleanField(null=True)
 
     def __str__(self):
         return self.user
