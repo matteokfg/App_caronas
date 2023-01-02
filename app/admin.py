@@ -1,11 +1,11 @@
 from django.contrib import admin
 from .models import (
     Motorista,
-    Profile_usuario,
+    Profile,
     Carona,
 )
 
 
-admin.site.register(Profile_usuario)
+admin.site.register(Profile)
 admin.site.register(Motorista)
 admin.site.register(Carona)

@@ -11,7 +11,7 @@ from localflavor.br.models import BRCPFField
 #<---------------------------------- model user ------------------------------------------>
 
 
-class Profile_usuario(models.Model):
+class Profile(models.Model):
     # Extensao do usuario padrao ja existente no django
     # faz a relacao de um para um entre o model inicial do django de usuarios com esse que adiciona mais campos relacionados ao usuario
     user = models.OneToOneField(
@@ -22,7 +22,6 @@ class Profile_usuario(models.Model):
     )
 
     cpf_user = BRCPFField(
-        primary_key=True,
         verbose_name="CPF_pk",
         help_text="Coluna com CPF do usuario",
     )
@@ -59,13 +58,13 @@ class Profile_usuario(models.Model):
     eh_motorista = models.BooleanField(null=True)
 
     def __str__(self):
-        return self.user
+        return self.user.username
 
 # a tabela Usuario vai ser atualizada automaticamente quando o User for atualizado
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
-        Profile_usuario.objects.create(user=instance)
+        Profile.objects.create(user=instance)
 # lugar aonde vi essas funcoes: https://simpleisbetterthancomplex.com/tutorial/2016/07/22/how-to-extend-django-user-model.html#onetoone
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
@@ -77,7 +76,7 @@ def save_user_profile(sender, instance, **kwargs):
 class Motorista(models.Model):
 
     user_id = models.OneToOneField(
-        Profile_usuario,
+        Profile,
         on_delete=models.PROTECT,
         verbose_name="ID",
         help_text="Coluna com o id do usuario que e motorista",
