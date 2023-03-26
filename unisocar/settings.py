@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'localflavor',
     'app',
 ]
 
@@ -79,8 +80,8 @@ DATABASES = {
     'default': {
         'NAME': 'primeiro_database',
         'ENGINE': 'django.db.backends.mysql',
-        'USER': 'root',
-        'PASSWORD': 'public_key.pem',
+        'USER': 'django_carona',
+        'PASSWORD': 'carona123!',
         'OPTIONS': {
             'autocommit': True,
             'read_default_file': 'c:\wamp64\bin\mysql\mysql5.7.31\data\\'
