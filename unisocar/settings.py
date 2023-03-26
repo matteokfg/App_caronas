@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -37,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'app',
 ]
 
 MIDDLEWARE = [
@@ -75,17 +77,16 @@ WSGI_APPLICATION = 'unisocar.wsgi.application'
 
 DATABASES = {
     'default': {
+        'NAME': 'primeiro_database',
         'ENGINE': 'django.db.backends.mysql',
+        'USER': 'root',
+        'PASSWORD': 'public_key.pem',
         'OPTIONS': {
-            'read_default_file': 'c:\wamp64\bin\mysql\mysql5.7.31\data\'
+            'autocommit': True,
+            'read_default_file': 'c:\wamp64\bin\mysql\mysql5.7.31\data\\'
         }
     }
 }
-
-
-database = primeiro_database
-user = root
-password = public_key.pem
 
 
 
