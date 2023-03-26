@@ -1,3 +1,4 @@
 from django.shortcuts import render
 
-# Create your views here.
+def caronas_disp(request):
+    return render(request, 'app/caronas_disp.html', {})
