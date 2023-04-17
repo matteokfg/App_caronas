@@ -7,9 +7,9 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 # field do cpf no banco de dados no django
 from localflavor.br.models import BRCPFField
+# arquivo que contem as tabelas do banco em modo orientacao a objetos do python/django
 
 #<---------------------------------- model user ------------------------------------------>
-
 
 class Profile(models.Model):
     # Extensao do usuario padrao ja existente no django
