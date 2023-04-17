@@ -134,10 +134,16 @@ class Carona(models.Model):
     inicial_location = models.ForeignKey(
         Localizacao,
         on_delete=models.PROTECT,
-        related_name="localizacao_inicial"
+        related_name="localizacao_inicial",
+        null=True,
     )  
 
-    location_final = models.ForeignKey(Localizacao, on_delete=models.PROTECT)   #localizacao destino da carona ,faz referencia a tabela que guarda a localizacao
+    #localizacao destino da carona ,faz referencia a tabela que guarda a localizacao
+    location_final = models.ForeignKey(
+        Localizacao,
+        on_delete=models.PROTECT,
+        null=True,
+    )
 
 
 
