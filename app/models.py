@@ -100,6 +100,24 @@ class Motorista(models.Model):
         return self.user_id
 
 #<---------------------------------- fim model motorista --------------------------------->
+#<---------------------------------- inicio model localizacao----------------------------->
+class Localizacao(models.Model):
+    """Tabela que vai guardar as localizacoes utilizadas nas caronas, vai ser populada pela Google Maps API."""
+
+    latitude = models.DecimalField(
+        max_digits=11,
+        decimal_places=7,
+        verbose_name="Latitude",
+        help_text="Representa a parte da coordenada, Latitude (em float), retornada pela API",
+    )
+
+    longitude = models.DecimalField(
+        max_digits=11,
+        decimal_places=7,
+        verbose_name="Longitude",
+        help_text="Representa a parte da coordenada, Longitude (em float), retornada pela API",
+    )
+#<---------------------------------- fim model localizacao-------------------------------->
 #<---------------------------------- model carona ---------------------------------------->
 
 class Carona(models.Model):
@@ -112,8 +130,14 @@ class Carona(models.Model):
         help_text="Coluna com o motorista da carona",
     )
 
-    # location_inicial =           | localizacao inicial do carro
-    # location_to =            | destino da carona
+    #localizacao inicial do carro, faz referencia a tabela que guarda as coordenadas (https://docs.djangoproject.com/en/dev/topics/db/queries/#backwards-related-objects)
+    inicial_location = models.ForeignKey(
+        Localizacao,
+        on_delete=models.PROTECT,
+        related_name="localizacao_inicial"
+    )  
+
+    location_final = models.ForeignKey(Localizacao, on_delete=models.PROTECT)   #localizacao destino da carona ,faz referencia a tabela que guarda a localizacao
 
 
 
@@ -135,7 +159,7 @@ class Carona(models.Model):
 
     date_inicial_carona = models.DateTimeField(
         default=timezone.now,
-        verbose_name="Dat   a de inicio",
+        verbose_name="Data de inicio",
         help_text="Data e hora iniciais da carona",
     )
 
