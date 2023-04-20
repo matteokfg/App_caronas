@@ -7,4 +7,5 @@ from . import views
 
 urlpatterns = [
     path('', views.inicio_index, name='index'),
+    path('caronas_disponiveis.html', views.caronas_disponiveis, name='caronas_disponiveis')
 ]
