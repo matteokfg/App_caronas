@@ -26,7 +26,6 @@ class Profile(models.Model):
         help_text="Coluna com CPF do usuario",
     )
 
-
     RELATION_WITH_UNISO = (
         ('A', 'Aluno'),
         ('F', 'Funcionario'),
@@ -39,7 +38,6 @@ class Profile(models.Model):
         verbose_name="Relacao UNISO",
         help_text="Coluna com a relacao do usuario com a UNISO",
     )
-
 
     GENERO = (
         ('M', 'Masculino'),
@@ -60,7 +58,7 @@ class Profile(models.Model):
     def __str__(self):
         return self.user.username
 
-# a tabela Usuario vai ser atualizada automaticamente quando o User for atualizado
+# a tabela Profile vai ser atualizada automaticamente quando o User for atualizado
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
@@ -82,12 +80,15 @@ class Motorista(models.Model):
         help_text="Coluna com o id do usuario que e motorista",
     )
 
+    foto_motorista = models.FileField(
+        upload_to="static/upload/motorista/",
+        default="static/upload/foto_em_branco.png",
+    )
 
-    # photo_car = models.FileField(
-    ## os arquivos nao vao ser salvos no BD, ver onde tem media_root e media_url
-    #   upload_to=#MEDIA_ROOT
-    ## o BD vai apenas salvar o caminho para o arquivo
-    # )
+    foto_carro = models.FileField(
+        upload_to="static/upload/carro/",
+        default="static/upload/foto_em_branco.png",
+    )
 
     placa = models.CharField(
         default='AAA-0000',
@@ -97,7 +98,7 @@ class Motorista(models.Model):
     )
 
     def __str__(self):
-        return self.user_id
+        return str(self.user_id)
 
 #<---------------------------------- fim model motorista --------------------------------->
 #<---------------------------------- inicio model localizacao----------------------------->
@@ -122,8 +123,8 @@ class Localizacao(models.Model):
 
 class Carona(models.Model):
     """Tabela que vai guardar os atributos do evento da carona"""
-    
-    user_motorista = models.OneToOneField(
+
+    user_motorista = models.ForeignKey(
         User,
         on_delete=models.PROTECT,
         verbose_name="Usuario",
@@ -136,6 +137,8 @@ class Carona(models.Model):
         on_delete=models.PROTECT,
         related_name="localizacao_inicial",
         null=True,
+        verbose_name="Localizacao inicial",
+        help_text="Coluna com oa localizacao(latitude e longitude) inicial da carona",
     )  
 
     #localizacao destino da carona ,faz referencia a tabela que guarda a localizacao
@@ -143,8 +146,9 @@ class Carona(models.Model):
         Localizacao,
         on_delete=models.PROTECT,
         null=True,
+        verbose_name="Localizacao final",
+        help_text="Coluna com oa localizacao(latitude e longitude) final da carona",
     )
-
 
 
     class Lotacao(models.IntegerChoices):
@@ -154,7 +158,6 @@ class Carona(models.Model):
         MAIS_QUATRO = 4,
         MAIS_CINCO = 5,
         MAIS_SEIS = 6,
-
 
     lotation = models.IntegerField(
         choices=Lotacao.choices,
@@ -178,15 +181,10 @@ class Carona(models.Model):
     @property
     def carona_duration(self):
         # o tempo vai ser guardado em segundos (decimal)
-
         return self.date_final_carona - self.date_inicial_carona
-        #max_digits=7,
-        #decimal_places=1,
-        #verbose_name="Duracao",
-        #help_text="Coluna com a duracao da carona(ms)"
 
     def __str__(self):
-        return f"Carona feita por {self.user_motorista}, na data {self.date_inicial_carona}, durando {self.carona_duration()}."
+        return f"Carona feita por {self.user_motorista}, na data {self.date_inicial_carona}, durando {self.carona_duration}."
 
 #<---------------------------- fim model carona ---------------------------------------->
 

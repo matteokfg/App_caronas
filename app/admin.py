@@ -2,6 +2,7 @@ from django.contrib import admin
 from .models import (
     Motorista,
     Profile,
+    Localizacao,
     Carona,
 )
 
@@ -9,4 +10,5 @@ from .models import (
 
 admin.site.register(Profile)
 admin.site.register(Motorista)
+admin.site.register(Localizacao)
 admin.site.register(Carona)
