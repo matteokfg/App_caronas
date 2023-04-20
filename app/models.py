@@ -58,7 +58,7 @@ class Profile(models.Model):
     def __str__(self):
         return self.user.username
 
-# a tabela Usuario vai ser atualizada automaticamente quando o User for atualizado
+# a tabela Profile vai ser atualizada automaticamente quando o User for atualizado
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
@@ -123,8 +123,8 @@ class Localizacao(models.Model):
 
 class Carona(models.Model):
     """Tabela que vai guardar os atributos do evento da carona"""
-    
-    user_motorista = models.OneToOneField(
+
+    user_motorista = models.ForeignKey(
         User,
         on_delete=models.PROTECT,
         verbose_name="Usuario",
@@ -137,6 +137,8 @@ class Carona(models.Model):
         on_delete=models.PROTECT,
         related_name="localizacao_inicial",
         null=True,
+        verbose_name="Localizacao inicial",
+        help_text="Coluna com oa localizacao(latitude e longitude) inicial da carona",
     )  
 
     #localizacao destino da carona ,faz referencia a tabela que guarda a localizacao
@@ -144,6 +146,8 @@ class Carona(models.Model):
         Localizacao,
         on_delete=models.PROTECT,
         null=True,
+        verbose_name="Localizacao final",
+        help_text="Coluna com oa localizacao(latitude e longitude) final da carona",
     )
 
 
@@ -180,7 +184,7 @@ class Carona(models.Model):
         return self.date_final_carona - self.date_inicial_carona
 
     def __str__(self):
-        return f"Carona feita por {self.user_motorista}, na data {self.date_inicial_carona}, durando {self.carona_duration()}."
+        return f"Carona feita por {self.user_motorista}, na data {self.date_inicial_carona}, durando {self.carona_duration}."
 
 #<---------------------------- fim model carona ---------------------------------------->
 
