@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.utils import timezone
 from .models import Carona
 
 #This file defines the view functions for the app. View functions are Python functions that handle HTTP requests and return HTTP responses. 
@@ -9,5 +10,5 @@ def inicio_index(request):
     return render(request, 'app/index.html', {})
 
 def caronas_disponiveis(request):
-    caronas = Carona.objects
+    caronas = Carona.objects.all() #Carona.objects.all().filter(date_final_carona__lte=timezone.now(), date_inicial_carona__gte=timezone.now()-datetime.timedelta(minutes=30)) <- caronas acontecendo agora e comecadas com 30 minutos antes
     return render(request, 'app/caronas_disponiveis.html', {'caronas': caronas})
