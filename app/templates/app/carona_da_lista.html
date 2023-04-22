@@ -1,18 +1,23 @@
-{% extends 'app/caronas_disponiveis.html' %}
+{% extends './caronas_disponiveis.html' %}
 
-{% block content %}
+{% block conteudo %}
     {% for carona in caronas %}
-        <div class="card">
-            <img
-            src="https://via.placeholder.com/150x150" 
-            class="card-img-top"
-            alt="Foto do Motorista"
-            />
-            <!-- {{ carona.user_motorista.foto_motorista }} -->
+        <div class="col">
+            <div class="card shadow-sm">
+            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
             <div class="card-body">
-            <h5 class="card-title">{{ carona.user_motorista.username }}</h5>
-            <p class="card-text">Vagas Disponíveis: {{ carona.lotation }}</p>
-            <a href="#" class="btn btn-primary">Solicitar Carona</a>
+                <!-- <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p> -->
+                <h5 class="card-title">{{ carona.user_motorista.username }}</h5>
+                <p class="card-text">Vagas Disponíveis: {{ carona.lotation }}</p>
+                <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                    <a href="#" class="btn btn-primary">Solicitar Carona</a>
+                    <!-- <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button> -->
+                </div>
+                <small class="text-body-secondary">{{ carona.carona_duration }}</small>
+                </div>
+            </div>
             </div>
         </div>
     {% endfor %}
