@@ -90,6 +90,11 @@ class Motorista(models.Model):
         default="static/upload/foto_em_branco.png",
     )
 
+    # foto_cnh = models.FileField(
+    #     upload_to="static/upload/carro/",
+    #     default="static/upload/foto_em_branco.png",
+    # )
+
     placa = models.CharField(
         default='AAA-0000',
         max_length=8,
@@ -182,6 +187,8 @@ class Carona(models.Model):
     def carona_duration(self):
         # o tempo vai ser guardado em segundos (decimal)
         return self.date_final_carona - self.date_inicial_carona
+    
+    # metodo retorna coordenadas (iniciais e finais)
 
     def __str__(self):
         return f"Carona feita por {self.user_motorista}, na data {self.date_inicial_carona}, durando {self.carona_duration}."
