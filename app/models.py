@@ -188,7 +188,9 @@ class Carona(models.Model):
         # o tempo vai ser guardado em segundos (decimal)
         return self.date_final_carona - self.date_inicial_carona
     
-    # metodo retorna coordenadas (iniciais e finais)
+    def carona_location(self):
+        # metodo retorna coordenadas (iniciais e finais)
+        return f"Localizacao inicial: {self.inicial_location.latitude} {self.inicial_location.longitude} e Localizacao final: {self.location_final.latitude} {self.location_final.longitude}"
 
     def __str__(self):
         return f"Carona feita por {self.user_motorista}, na data {self.date_inicial_carona}, durando {self.carona_duration}."
