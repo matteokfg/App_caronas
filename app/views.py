@@ -12,3 +12,9 @@ def inicio_index(request):
 def caronas_disponiveis(request):
     caronas = Carona.objects.all() #Carona.objects.all().filter(date_final_carona__lte=timezone.now(), date_inicial_carona__gte=timezone.now()-datetime.timedelta(minutes=30)) <- caronas acontecendo agora e comecadas com 30 minutos antes
     return render(request, 'app/caronas_disponiveis.html', {'caronas': caronas})
+
+def cadastro_passageiro(request):
+    return render(request, 'app/cadastro_passageiro.html', {})
+
+def cadastro_motorista(request):
+    return render(request, 'app/cadastro_motorista.html', {})
