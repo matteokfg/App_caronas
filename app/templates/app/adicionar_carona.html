@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Adicionar Carona</title>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+    />
+  </head>
+
+  <body>
+    <div class="container">
+      <h1 align:c class="text-dark">ADICIONAR CARONA</h1>
+      <div class="row">
+        <div class="col-md-2">
+          <img
+            src="https://via.placeholder.com/150"
+            alt="Foto de perfil"
+            class="img-thumbnail"
+          />
+        </div>
+        <div class="col-md-10 align-self-center">
+          <p class="lead mb-0">Nome do usuário</p>
+        </div>
+      </div>
+      <form>
+        <div class="form-group">
+          <label for="localizacao" class="text-primary"
+            >Localização atual</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            id="localizacao"
+            placeholder="Localização"
+          />
+        </div>
+        <div class="form-group">
+          <label for="destino" class="text-primary">Destino</label>
+          <input
+            type="text"
+            class="form-control"
+            id="destino"
+            placeholder="Para onde vou"
+          />
+        </div>
+        <div class="form-group">
+          <label for="placa" class="text-primary">Placa</label>
+          <input
+            type="text"
+            class="form-control"
+            id="placa"
+            placeholder="Ex: ABC1234"
+          />
+        </div>
+        <div class="form-group">
+          <label for="lotacao" class="text-primary">Lotação do veículo</label>
+          <input
+            type="text"
+            class="form-control"
+            id="lotacao"
+            placeholder="4 lugares"
+          />
+        </div>
+        <button type="submit" class="btn btn-warning">Adicionar carona</button>
+      </form>
+    </div>
+  </body>
+</html>
