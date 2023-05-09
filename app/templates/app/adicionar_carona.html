@@ -2,68 +2,64 @@
 <html lang="pt-br">
   <head>
     <meta charset="UTF-8" />
-    <title>Adicionar Carona</title>
+    <title>Adicione uma carona</title>
     <link
       rel="stylesheet"
       href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
     />
+    <br>
   </head>
-
+    <link rel="stylesheet" href="add.css">
   <body>
     <div class="container">
-      <h1 align:c class="text-dark">ADICIONAR CARONA</h1>
-      <div class="row">
-        <div class="col-md-2">
-          <img
-            src="https://via.placeholder.com/150"
-            alt="Foto de perfil"
-            class="img-thumbnail"
-          />
-        </div>
-        <div class="col-md-10 align-self-center">
-          <p class="lead mb-0">Nome do usuário</p>
-        </div>
+      <h2 class="text-dark">ADICIONAR CARONA</h2>
+      <br>
+      <div class="thumbnail-container">
+        <img
+          src="https://via.placeholder.com/150"
+          alt="Foto de perfil"
+          class="img-thumbnail thumbnail-image"
+        />
+        <p class="thumbnail-text">Nome</p>
       </div>
       <form>
         <div class="form-group">
-          <label for="localizacao" class="text-primary"
-            >Localização atual</label
-          >
+            <input type="text" class="form-control" id="localizacao" placeholder="Localização atual" tabindex="1" required />
+          </div>   
+          <br>       
+        <div class="form-group">
           <input
             type="text"
             class="form-control"
-            id="localizacao"
-            placeholder="Localização"
+            id="Destino"
+            placeholder="Destino"
           />
+          <br>
         </div>
         <div class="form-group">
-          <label for="destino" class="text-primary">Destino</label>
           <input
             type="text"
             class="form-control"
-            id="destino"
-            placeholder="Para onde vou"
+            id="Placa"
+            placeholder="Placa"
           />
         </div>
+        <br>
         <div class="form-group">
-          <label for="placa" class="text-primary">Placa</label>
-          <input
-            type="text"
-            class="form-control"
-            id="placa"
-            placeholder="Ex: ABC1234"
-          />
-        </div>
-        <div class="form-group">
-          <label for="lotacao" class="text-primary">Lotação do veículo</label>
           <input
             type="text"
             class="form-control"
             id="lotacao"
-            placeholder="4 lugares"
+            placeholder="Lotação do veículo"
           />
         </div>
-        <button type="submit" class="btn btn-warning">Adicionar carona</button>
+        <br>
+        <div class="submit-buttons">
+          <button type="submit" class="btn btn-warning mr-3">
+            Adicionar caronas
+          </button>
+          <button type="button" class="btn btn-primary">Cancelar</button>
+        </div>          
       </form>
     </div>
   </body>
