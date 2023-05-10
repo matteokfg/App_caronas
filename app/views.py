@@ -1,6 +1,9 @@
 from django.shortcuts import render
 from django.utils import timezone
 from .models import Carona
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+from django.contrib.auth.decorators import login_required
 
 #This file defines the view functions for the app. View functions are Python functions that handle HTTP requests and return HTTP responses. 
 #In this file, we define a single view function called 'caronas_disp'. This function takes a request object as its argument and returns a rendered HTML template using the 'render' shortcut function. The rendered template is the 'index.html' template located in the 'app' directory.
@@ -18,3 +21,12 @@ def cadastro_passageiro(request):
 
 def cadastro_motorista(request):
     return render(request, 'app/cadastro_motorista.html', {})
+
+def login(request):
+    return render(request, 'app/login.html', {})
+
+@login_required
+def caronas_disponiveis_inicio(request):
+    return HttpResponseRedirect(
+               reverse('caronas_disponiveis', 
+                       args=[request.user.username]))
