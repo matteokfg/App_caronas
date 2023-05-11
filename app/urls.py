@@ -7,9 +7,15 @@ from . import views
 
 urlpatterns = [
     path('', views.inicio_index, name='index'),
-    path('inicio', views.caronas_disponiveis_inicio, name='inicio'),
-    path('caronas_disponiveis', views.caronas_disponiveis, name='caronas_disponiveis'),
+    path('login', views.login_user, name='login'),
+    path('logout', views.logout_user, name='logout'),
+
     path('cadastro', views.cadastro_passageiro, name='cadastro'),
     path('cadastro/motorista', views.cadastro_motorista, name='cadastro_motorista'),
-    path('login', views.login, name='login'),
+
+    path('inicio', views.caronas_disponiveis_inicio, name='inicio'),
+
+    path('caronas_disponiveis', views.caronas_disponiveis, name='caronas_disponiveis'),
+
+
 ]

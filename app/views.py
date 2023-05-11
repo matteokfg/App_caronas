@@ -4,6 +4,7 @@ from .models import Carona
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login, logout, get_user_model
 
 #This file defines the view functions for the app. View functions are Python functions that handle HTTP requests and return HTTP responses. 
 #In this file, we define a single view function called 'caronas_disp'. This function takes a request object as its argument and returns a rendered HTML template using the 'render' shortcut function. The rendered template is the 'index.html' template located in the 'app' directory.
@@ -17,13 +18,47 @@ def caronas_disponiveis(request):
     return render(request, 'app/caronas_disponiveis.html', {'caronas': caronas})
 
 def cadastro_passageiro(request):
+    if request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('index'))
+    
+    if request.method == 'POST':
+        username = request.POST["username"]
+        first_name = request.POST["first_name"]
+        last_name = request.POST["last_name"]
+        email = request.POST["email"]
+        password = request.POST["password"]
+        password2 = request.POST["password2"]
+
+        user_model = get_user_model()
+        # if pass1 == pass2
+        user = user_model.objects.create_user(username=username, email=email, password=password) # extra args
+        user.save()
+
+        return HttpResponseRedirect(reverse('caronas_disponiveis'))
+    
     return render(request, 'app/cadastro_passageiro.html', {})
 
 def cadastro_motorista(request):
     return render(request, 'app/cadastro_motorista.html', {})
 
-def login(request):
+def login_user(request):
+    if request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('index'))
+
+    if request.method == 'POST':
+        username = request.POST["username"]
+        password = request.POST["password"]
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return HttpResponseRedirect(reverse('caronas_disponiveis'))
+
     return render(request, 'app/login.html', {})
+
+
+def logout_user(request):
+    logout(request)
+    return HttpResponseRedirect(reverse('index'))
 
 @login_required
 def caronas_disponiveis_inicio(request):
