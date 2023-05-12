@@ -29,12 +29,17 @@ def cadastro_passageiro(request):
         password = request.POST["password"]
         password2 = request.POST["password2"]
 
-        user_model = get_user_model()
-        # if pass1 == pass2
-        user = user_model.objects.create_user(username=username, email=email, password=password) # extra args
-        user.save()
+        if password == password2:
+            user_model = get_user_model()
+            user = user_model.objects.create_user(username=username, email=email, password=password, first_name=first_name, last_name=last_name)
+            user.save()
 
-        return HttpResponseRedirect(reverse('caronas_disponiveis'))
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                return HttpResponseRedirect(reverse('caronas_disponiveis'))
+
+        # return HttpResponseRedirect(reverse('caronas_disponiveis'))
     
     return render(request, 'app/cadastro_passageiro.html', {})
 
@@ -60,8 +65,8 @@ def logout_user(request):
     logout(request)
     return HttpResponseRedirect(reverse('index'))
 
-@login_required
-def caronas_disponiveis_inicio(request):
-    return HttpResponseRedirect(
-               reverse('caronas_disponiveis', 
-                       args=[request.user.username]))
+# @login_required
+# def caronas_disponiveis_inicio(request):
+#     return HttpResponseRedirect(
+#                reverse('caronas_disponiveis', 
+#                        args=[request.user.username]))

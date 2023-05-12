@@ -31,15 +31,17 @@
     <input name="first_name" type="text" id="inputNome" class="form-control" placeholder="Primeiro Nome" required autofocus><br>
 
     <label for="inputNome" class="sr-only">Sobrenome</label>
-    <input name="last_name" type="text" id="inputNome" class="form-control" placeholder="Sobrenome" required autofocus><br>
+    <input name="last_name" type="text" id="inputSobrenome" class="form-control" placeholder="Sobrenome" required autofocus><br>
 
     <label for="inputNome" class="sr-only">Nome de usuário</label>
-    <input name="username" type="text" id="inputNome" class="form-control" placeholder="Nome de usuário" required autofocus><br>
+    <input name="username" type="text" id="inputNomeUsuario" class="form-control" placeholder="Nome de usuário" required autofocus><br>
 
+    <!--GENERO DEVE SER APENAS TRES OPCOES, NAO TEXTO ABERTO -->
     <!-- <label for="inputGenero" class="sr-only">Gênero</label>
-    <input type="text" id="inputGenero" class="form-control" placeholder="Gênero" required autofocus><br>
+    <input name="gereno" type="text" id="inputGenero" class="form-control" placeholder="Gênero" required autofocus><br> -->
 
-    <label for="inputRelacao" class="sr-only">Qual a sua relação com a UNISO?</label>
+        <!--RELACAO DEVE SER APENAS TRES OPCOES, NAO TEXTO ABERTO -->
+    <!-- <label for="inputRelacao" class="sr-only">Qual a sua relação com a UNISO?</label>
     <input type="text" id="inputRelacao" class="form-control" placeholder="Qual a sua relação com a UNISO?" required autofocus><br> -->
 
     <label for="inputEmail" class="sr-only">Email</label>
@@ -49,17 +51,17 @@
     <input name="password" type="password" id="inputSenha" class="form-control" placeholder="Senha" required><br>
 
     <label for="inputSenha" class="sr-only">Confirmar senha</label>
-    <input name="password2" type="password" id="inputSenha" class="form-control" placeholder="Confirmar senha" required><br>
+    <input name="password2" type="password" id="inputSenha2" class="form-control" placeholder="Confirmar senha" required><br>
 
-    <!-- <div class="checkbox mb-3">
+    <div class="checkbox mb-3">
       <label>
-        <input type="checkbox" value="remember-me"> Eu concordo com os Termos de Uso e Privacidade
+        <input type="checkbox" value="aceito_termos" required> Eu concordo com os Termos de Uso e Privacidade
       </label>
-    </div> -->
+    </div>
 
     <button class="btn btn-lg btn-primary btn-block" type="submit">Cadastrar-se</button>
     <a class="btn btn-lg btn-primary btn-block" href="{% url 'cadastro_motorista' %}">Motorista</a>
-    <button class="btn btn-lg btn-primary btn-block" type="submit">Já possui uma conta? Conecte-se</button>
+    <a class="btn btn-lg btn-primary btn-block" href="{% url 'login' %}">Já possui uma conta? Faça login</a>
     <p class="mt-5 mb-3 text-muted">&copy; Unisocar - 2023</p>
   
   
