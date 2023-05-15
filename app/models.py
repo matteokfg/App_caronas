@@ -51,8 +51,6 @@ class Profile(models.Model):
         help_text="Coluna com o genero do usuario",
     )
 
-    ativo = models.BooleanField(null=True)
-
     eh_motorista = models.BooleanField(null=True)
 
     def __str__(self):
@@ -73,7 +71,7 @@ def save_user_profile(sender, instance, **kwargs):
 
 class Motorista(models.Model):
 
-    user_id = models.OneToOneField(
+    profile = models.OneToOneField(
         Profile,
         on_delete=models.PROTECT,
         verbose_name="ID",
@@ -103,7 +101,7 @@ class Motorista(models.Model):
     )
 
     def __str__(self):
-        return str(self.user_id)
+        return str(self.profile)
 
 #<---------------------------------- fim model motorista --------------------------------->
 #<---------------------------------- inicio model localizacao----------------------------->
@@ -129,8 +127,8 @@ class Localizacao(models.Model):
 class Carona(models.Model):
     """Tabela que vai guardar os atributos do evento da carona"""
 
-    user_motorista = models.ForeignKey(
-        User,
+    motorista = models.ForeignKey(
+        Motorista,
         on_delete=models.PROTECT,
         verbose_name="Usuario",
         help_text="Coluna com o motorista da carona",
@@ -193,7 +191,7 @@ class Carona(models.Model):
         return f"Localizacao inicial: {self.inicial_location.latitude} {self.inicial_location.longitude} e Localizacao final: {self.location_final.latitude} {self.location_final.longitude}"
 
     def __str__(self):
-        return f"Carona feita por {self.user_motorista}, na data {self.date_inicial_carona}, durando {self.carona_duration}."
+        return f"Carona feita por {self.motorista}, na data {self.date_inicial_carona}, durando {self.carona_duration}."
 
 #<---------------------------- fim model carona ---------------------------------------->
 

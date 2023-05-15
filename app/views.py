@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.utils import timezone
-from .models import Carona, Motorista, User
+from .models import Carona, Motorista, User, Profile
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
@@ -14,12 +14,20 @@ def inicio_index(request):
     return render(request, 'app/index.html', {})
 
 def caronas_disponiveis(request):
+    context = {}
     motoristas = []
     caronas = Carona.objects.all() #Carona.objects.all().filter(date_final_carona__lte=timezone.now(), date_inicial_carona__gte=timezone.now()-datetime.timedelta(minutes=30)) <- caronas acontecendo agora e comecadas com 30 minutos antes
     for carona in caronas:
-        motorista = Motorista.objects.filter(id=carona.user_motorista.id)
-        motoristas.append(motorista)
-    return render(request, 'app/caronas_disponiveis.html', {'caronas': caronas, 'motoristas': motoristas})
+        motorista = list(Motorista.objects.filter(id=carona.motorista_id))
+        print(motorista)
+        motoristas.append(motorista[0])
+    # context['caronas'] = caronas
+    # context['motoristas'] = motoristas
+    print(caronas)
+    print(motoristas)
+    caronas_e_motoristas = zip(caronas, motoristas)
+    context['caronas_e_motoristas'] = caronas_e_motoristas
+    return render(request, 'app/caronas_disponiveis.html', context)
 
 def cadastro_passageiro(request):
     if request.user.is_authenticated:

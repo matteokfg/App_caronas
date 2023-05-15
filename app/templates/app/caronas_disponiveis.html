@@ -16,8 +16,8 @@
       <div class="container">
   
         <div class="row"> <!--row-cols-1 row-cols-sm-2 row-cols-md-3 g-3-->
-          {% for carona, motorista in zip(caronas, motoristas) %}
-            {% include "app/includes/carona_card.html" with carona=carona, motorista=motorista %}
+          {% for carona, motorista in context_caronas_e_motoristas %}
+            {% include "app/includes/carona_card.html" with carona=carona motorista=motorista %}
           {% endfor %}
         </div>
       </div>
