@@ -5,6 +5,8 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout, get_user_model
+from django.contrib.auth.forms import UserCreationForm
+from .forms import ProfileForm, MotoristaForm, CaronaForm, LocalizacaoForm
 
 #This file defines the view functions for the app. View functions are Python functions that handle HTTP requests and return HTTP responses. 
 #In this file, we define a single view function called 'caronas_disp'. This function takes a request object as its argument and returns a rendered HTML template using the 'render' shortcut function. The rendered template is the 'index.html' template located in the 'app' directory.
@@ -22,6 +24,33 @@ def caronas_disponiveis(request):
     caronas_e_motoristas = zip(list(caronas), motoristas)
     
     return render(request, 'app/caronas_disponiveis.html', {'caronas_e_motoristas': caronas_e_motoristas})
+
+def login_user(request):
+    if request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('index'))
+
+    if request.method == 'POST':
+        username = request.POST["username"]
+        password = request.POST["password"]
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return HttpResponseRedirect(reverse('caronas_disponiveis'))
+
+    return render(request, 'app/login.html', {})
+
+def logout_user(request):
+    logout(request)
+    return HttpResponseRedirect(reverse('index'))
+
+def adicionar_carona(request):
+    if request.user.is_authenticated:
+        if request.method == 'GET':
+            return render(request, 'app/adicionar_carona.html', {})
+        if request.method == 'POST':
+
+            return HttpResponseRedirect(reverse('caronas_disponiveis'))
+    return HttpResponseRedirect(reverse('index'))
 
 def cadastro_passageiro(request):
     if request.user.is_authenticated:
@@ -52,31 +81,24 @@ def cadastro_passageiro(request):
 def cadastro_motorista(request):
     return render(request, 'app/cadastro_motorista.html', {})
 
-def login_user(request):
+#---------------- usando forms.py ----------------------
+
+def cadastro(request):
     if request.user.is_authenticated:
         return HttpResponseRedirect(reverse('index'))
 
-    if request.method == 'POST':
-        username = request.POST["username"]
-        password = request.POST["password"]
-        user = authenticate(request, username=username, password=password)
+    form_user = UserCreationForm(request.POST or None)
+    form_profile = ProfileForm(request.POST or None)
+    context = {
+        "form_user": form_user,
+        "form_profile": form_profile
+    }
+    if form_profile.is_valid() and form_user.is_valid():
+        user_object = form_user.save()
+        profile_object = form_profile.save()
+        user = authenticate(request, username=form_user.username, password=form_user.password)
         if user is not None:
             login(request, user)
             return HttpResponseRedirect(reverse('caronas_disponiveis'))
-
-    return render(request, 'app/login.html', {})
-
-
-def logout_user(request):
-    logout(request)
-    return HttpResponseRedirect(reverse('index'))
-
-def adicionar_carona(request):
-    if request.user.is_authenticated:
-        if request.method == 'GET':
-            return render(request, 'app/adicionar_carona.html', {})
-        if request.method == 'POST':
-
-            return HttpResponseRedirect(reverse('caronas_disponiveis'))
-    return HttpResponseRedirect(reverse('index'))
-
+    
+    return render(request, 'app/cadastro.html', context=context)

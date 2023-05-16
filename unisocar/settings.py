@@ -40,7 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'localflavor',
     'app',
+    'bootstrapform',
 ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

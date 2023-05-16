@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load bootstrap %}
+
+{% block titulo %}
+    <title>Cadastro</title>
+{% endblock %}
+
+
+{% block content %}
+    <div class="container">
+        <h2>Cadastre-se</h2>
+    </div>
+    <form method="post" class="">
+        <div class="container">
+            {% csrf_token %}
+
+            {{ form_user.username|bootstrap}}
+
+            {{ form_profile|bootstrap }}
+
+            {{ form_user.password1|bootstrap}}
+            {{ form_user.password2|bootstrap}}
+
+            <button type="submit" class="btn btn-primary">Cadastrar</button>
+        </div>
+    </form>
+{% endblock %}
+
+{% block javascript %}
+<script>
+    // document.querySelector("[for=id_cpf_user]") = "CPF"
+</script>
+{% endblock %}
