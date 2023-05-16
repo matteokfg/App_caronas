@@ -7,7 +7,14 @@ from . import views
 
 urlpatterns = [
     path('', views.inicio_index, name='index'),
-    path('caronas_disponiveis', views.caronas_disponiveis, name='caronas_disponiveis'),
+    path('login', views.login_user, name='login'),
+    path('logout', views.logout_user, name='logout'),
+
     path('cadastro', views.cadastro_passageiro, name='cadastro'),
     path('cadastro/motorista', views.cadastro_motorista, name='cadastro_motorista'),
+
+    path('caronas_disponiveis', views.caronas_disponiveis, name='caronas_disponiveis'),
+    path('adicionar_carona', views.adicionar_carona, name='adicionar_carona')
+
+
 ]
