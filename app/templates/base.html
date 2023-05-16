@@ -34,11 +34,21 @@
       <div class="collapse navbar-collapse" id="collapsibleNavbar">
         <ul class="navbar-nav ml-auto">
           {% if request.user.is_authenticated %}
-          <!--item temporario-->
           <li class="nav-item">
             <a href="{% url 'caronas_disponiveis' %}" class="nav-link font-weight-bold">Caronas Disponíveis</a>
           </li>
-          <!--fim do item temporario-->
+          <li class="nav-item">
+            <a href="{% url 'adicionar_carona' %}" class="nav-link font-weight-bold">Adicionar Carona</a>
+          </li>
+
+          {# 
+          {% if profile.eh_motorista %}
+            <li class="nav-item">
+              <a href="{% url 'caronas_disponiveis' %}" class="nav-link font-weight-bold">Adicionar Carona</a>
+            </li>
+          {% endif %}
+          #}
+
           <li class="nav-item">
             <a class="nav-link font-weight-bold" href="{% url 'logout' %}">Logout</a>
           </li>

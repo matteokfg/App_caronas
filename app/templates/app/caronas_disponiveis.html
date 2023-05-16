@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block titulo %}
-<title>Unisocar - Caronas</title>
+  <title>Unisocar - Caronas</title>
 {% endblock %}
 
 {% block estilo %}
@@ -10,20 +10,14 @@
 {% endblock %}
 
 {% block content %}
-
-    <h1 class="text-center my-5">Caronas Disponíveis</h1>
-    <div class="album py-5 bg-light">
-      <div class="container">
-  
-        <div class="row"> <!--row-cols-1 row-cols-sm-2 row-cols-md-3 g-3-->
-          {% for carona, motorista in context_caronas_e_motoristas %}
-            {% include "app/includes/carona_card.html" with carona=carona motorista=motorista %}
-          {% endfor %}
-        </div>
+  <h1 class="text-center my-5">Caronas Disponíveis</h1>
+  <div class="album py-5 bg-light">
+    <div class="container">
+      <div class="row"> <!--row-cols-1 row-cols-sm-2 row-cols-md-3 g-3-->
+        {% for carona, motorista in caronas_e_motoristas %}
+          {% include "app/includes/carona_card.html" with carona=carona motorista=motorista %}
+        {% endfor %}
       </div>
     </div>
-    
-
-
-
+  </div>
 {% endblock %}

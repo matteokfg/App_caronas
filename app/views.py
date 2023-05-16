@@ -14,20 +14,14 @@ def inicio_index(request):
     return render(request, 'app/index.html', {})
 
 def caronas_disponiveis(request):
-    context = {}
-    motoristas = []
     caronas = Carona.objects.all() #Carona.objects.all().filter(date_final_carona__lte=timezone.now(), date_inicial_carona__gte=timezone.now()-datetime.timedelta(minutes=30)) <- caronas acontecendo agora e comecadas com 30 minutos antes
-    for carona in caronas:
-        motorista = list(Motorista.objects.filter(id=carona.motorista_id))
-        print(motorista)
-        motoristas.append(motorista[0])
-    # context['caronas'] = caronas
-    # context['motoristas'] = motoristas
-    print(caronas)
-    print(motoristas)
-    caronas_e_motoristas = zip(caronas, motoristas)
-    context['caronas_e_motoristas'] = caronas_e_motoristas
-    return render(request, 'app/caronas_disponiveis.html', context)
+    
+    caronas_motoristas_id = caronas.values_list('motorista_id', flat=True)
+    motoristas = list(Motorista.objects.filter(id__in=caronas_motoristas_id))
+    print(motoristas[0].foto_motorista)
+    caronas_e_motoristas = zip(list(caronas), motoristas)
+    
+    return render(request, 'app/caronas_disponiveis.html', {'caronas_e_motoristas': caronas_e_motoristas})
 
 def cadastro_passageiro(request):
     if request.user.is_authenticated:
@@ -75,5 +69,14 @@ def login_user(request):
 
 def logout_user(request):
     logout(request)
+    return HttpResponseRedirect(reverse('index'))
+
+def adicionar_carona(request):
+    if request.user.is_authenticated:
+        if request.method == 'GET':
+            return render(request, 'app/adicionar_carona.html', {})
+        if request.method == 'POST':
+
+            return HttpResponseRedirect(reverse('caronas_disponiveis'))
     return HttpResponseRedirect(reverse('index'))
 

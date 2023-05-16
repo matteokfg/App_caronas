@@ -14,6 +14,7 @@ urlpatterns = [
     path('cadastro/motorista', views.cadastro_motorista, name='cadastro_motorista'),
 
     path('caronas_disponiveis', views.caronas_disponiveis, name='caronas_disponiveis'),
+    path('adicionar_carona', views.adicionar_carona, name='adicionar_carona')
 
 
 ]
