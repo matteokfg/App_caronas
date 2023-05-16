@@ -1,0 +1,41 @@
+h2 {
+  text-align: center;
+}
+
+.form-group{
+  display: block;
+  margin: 0 auto;
+}
+.form-control {
+  padding: 10px;
+  margin: 10px;
+  font-size: 0.9em;
+  width: 500px;
+  justify-content: center;
+  display: block;
+  margin: 0 auto;
+}
+.thumbnail-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 30px;
+}
+.thumbnail-image {
+  max-width: 110px;
+  max-height: 110px;
+}
+.thumbnail-text {
+  margin-top: 10px;
+  font-size: 10px;
+  font-weight: bold;
+}
+.submit-buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+}
+.input-sm {
+width: 500px;
+}

@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block titulo %}
+  <title>Adicionar Carona</title>
+{% endblock %}
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
+
+{% block estilo %}
+  <link rel="stylesheet" href="adicionar_caronas.css">
+{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <h2 class="text-dark">ADICIONAR CARONA</h2>
+    <br>
+    <div class="thumbnail-container">
+      <img src="https://via.placeholder.com/150" alt="Foto de perfil" class="img-thumbnail thumbnail-image"/>
+      <p class="thumbnail-text">{{ request.user.username }}</p>
+    </div>
+    <form>
+      <div class="form-group">
+          <input type="text" class="form-control" id="localizacao" placeholder="Localização atual" tabindex="1" required />
+      </div>
+      <br>
+      <div class="form-group">
+        <input type="text" class="form-control" id="Destino" placeholder="Destino"/>
+      </div>
+      <br>
+      <div class="form-group">
+        <input type="text" class="form-control" id="Placa" placeholder="Placa"/>
+      </div>
+      <br>
+      <div class="form-group">
+        <input type="text" class="form-control" id="lotacao" placeholder="Lotação do veículo"/>
+      </div>
+      <br>
+      <div class="submit-buttons">
+        <button type="submit" class="btn btn-warning mr-3">
+          Adicionar caronas
+        </button>
+        <button type="button" class="btn btn-primary">Cancelar</button>
+      </div>
+    </form>
+  </div>
+{% endblock %}
+
