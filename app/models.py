@@ -22,7 +22,7 @@ class Profile(models.Model):
     )
 
     cpf_user = BRCPFField(
-        verbose_name="CPF_pk",
+        verbose_name="CPF",
         help_text="Coluna com CPF do usuario",
     )
 

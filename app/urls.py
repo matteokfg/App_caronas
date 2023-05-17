@@ -10,8 +10,9 @@ urlpatterns = [
     path('login', views.login_user, name='login'),
     path('logout', views.logout_user, name='logout'),
 
-    # path('cadastro', views.cadastro_passageiro, name='cadastro'),
     path('cadastro', views.cadastro, name='cadastro'),
+    path('cadastro/passageiro', views.cadastro_passageiro, name='cadastro_passageiro'),
+
     path('cadastro/motorista', views.cadastro_motorista, name='cadastro_motorista'),
 
     path('caronas_disponiveis', views.caronas_disponiveis, name='caronas_disponiveis'),

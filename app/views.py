@@ -5,8 +5,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout, get_user_model
-from django.contrib.auth.forms import UserCreationForm
-from .forms import ProfileForm, MotoristaForm, CaronaForm, LocalizacaoForm
+from .forms import UserForm, ProfileForm, MotoristaForm, CaronaForm, LocalizacaoForm
 
 #This file defines the view functions for the app. View functions are Python functions that handle HTTP requests and return HTTP responses. 
 #In this file, we define a single view function called 'caronas_disp'. This function takes a request object as its argument and returns a rendered HTML template using the 'render' shortcut function. The rendered template is the 'index.html' template located in the 'app' directory.
@@ -52,7 +51,7 @@ def adicionar_carona(request):
             return HttpResponseRedirect(reverse('caronas_disponiveis'))
     return HttpResponseRedirect(reverse('index'))
 
-def cadastro_passageiro(request):
+def cadastro_passageiro_antigo(request):
     if request.user.is_authenticated:
         return HttpResponseRedirect(reverse('index'))
     
@@ -87,18 +86,38 @@ def cadastro(request):
     if request.user.is_authenticated:
         return HttpResponseRedirect(reverse('index'))
 
-    form_user = UserCreationForm(request.POST or None)
-    form_profile = ProfileForm(request.POST or None)
+    form_user = UserForm(request.POST or None)
     context = {
         "form_user": form_user,
-        "form_profile": form_profile
     }
-    if form_profile.is_valid() and form_user.is_valid():
+    if form_user.is_valid():
         user_object = form_user.save()
-        profile_object = form_profile.save()
-        user = authenticate(request, username=form_user.username, password=form_user.password)
-        if user is not None:
-            login(request, user)
-            return HttpResponseRedirect(reverse('caronas_disponiveis'))
+        context['form_user'] = UserForm()
+        login(request, user_object)
+        return HttpResponseRedirect(reverse('cadastro_passageiro'))
     
-    return render(request, 'app/cadastro.html', context=context)
+    return render(request, 'app/cadastro_user.html', context=context)
+
+def cadastro_passageiro(request):
+    profile = Profile.objects.get(user_id=request.user.id)
+
+    if request.method == 'POST':
+        profile_form = ProfileForm(request.POST, instance=profile)
+        if profile_form.is_valid():
+            profile_form.save()
+            return HttpResponseRedirect(reverse('caronas_disponiveis'))
+    else:
+        profile_form = ProfileForm(instance=profile)
+
+    return render(request, 'app/cadastro_passageiro.html', {'profile_form': profile_form})
+    # form_profile = ProfileForm(request.POST or None)
+    # context = {
+    #     'form_profile': form_profile,
+    # }
+    # if form_profile.is_valid():
+    #     # profile_object = Profile.objects.create(user=request.user, cpf_user=request.POST.get("cpf_user"), relation_with_uniso_user=request.POST.get("relation_with_uniso_user"), genero_user=request.POST.get("genero_user"), eh_motorista=request.POST.get("eh_motorista"))
+    #     profile_object = form_profile.save()
+    #     context['form_profile'] = ProfileForm()
+    #     return HttpResponseRedirect(reverse('caronas_disponiveis'))
+    
+    # return render(request, 'app/cadastro_passageiro.html', context=context)
