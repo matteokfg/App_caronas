@@ -1,0 +1,40 @@
+
+    h1 {
+      text-align: center;
+    }
+
+    .form-control {
+      padding: 10px;
+      margin: 1px;
+      font-size: 14px;
+    }
+
+    .thumbnail-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 20px;
+    }
+
+    .thumbnail-text {
+      margin-top: 10px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .btn {
+      font-size: 20px;
+      padding: 1px 50px;
+      margin: 20px;
+    }
+
+    .form-group {
+      max-width: 300px;
+      margin: 0 auto;
+    }
+
+    .group {
+      margin: 0 auto;
+      max-width: 130px;
+      padding: 1px;
+    }
