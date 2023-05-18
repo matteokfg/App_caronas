@@ -1,92 +1,37 @@
 {% extends 'base.html' %}
 {% load static %}
-{% load bootstrap %}
-<!-- <!doctype html>
-<html lang="en">
+{% load crispy_forms_tags %}
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="">
-  <meta name="author" content="">
-   -->
+
 {% block titulo %}
   <title>Cadastro - Passageiro</title>
 {% endblock %}
-  <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous"> -->
 
-  <!-- Bootstrap core CSS -->
-  <!-- <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}"> -->
 
 {% block estilo %}
-  <!-- Custom styles for this template -->
-  <!-- <link rel="stylesheet" href="{% static 'css/signin.css' %}"> -->
+  <style>
+    #id_user{
+      background: #eee;
+      pointer-events: none;
+      touch-action: none;
+    }
+  </style>
 {% endblock %}
-  <!-- </head> -->
 
-<!-- <body class="text-center"> -->
 {% block content %}
 <div class="container">
   <div class="container">
     <img class="mb-4" src="../../assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
     <h1 class="h3 mb-3 font-weight-normal">Continue seu cadastro como Passageiro!</h1>
   </div>
-  <form class="form-sigin" method="post">
+  <form class="form-sigin" method="post" onload="auto_preencher_input()">
       {% csrf_token %}
 
-      <!-- <div class="form-group">
-        <label for="user" class="control-label">Usuário</label>
-        <input type="text" id="user" name="user" placeholder="{{ user.username }}" readonly>{{ user }}
-      </div> -->
-      {{ form_profile|bootstrap }}
-      <!-- {{ form_profile.user|bootstrap}} -->
-      <!-- {{ form_profile.cpf_user|bootstrap}}
-      {{ form_profile.relation_with_uniso_user|bootstrap}}
-      {{ form_profile.genero_user|bootstrap}}
-      {{ form_profile.eh_motorista|bootstrap}} -->
+      {{ profile_form|crispy }}
 
-      <!-- <label for="inputNome" class="sr-only">Nome</label>
-      <input name="first_name" type="text" id="inputNome" class="form-control" placeholder="Primeiro Nome" required autofocus><br>
+      <button class="btn btn-lg btn-primary" type="submit">Cadastrar</button>
 
-      <label for="inputNome" class="sr-only">Sobrenome</label>
-      <input name="last_name" type="text" id="inputSobrenome" class="form-control" placeholder="Sobrenome" required autofocus><br>
-
-      <label for="inputNome" class="sr-only">Nome de usuário</label>
-      <input name="username" type="text" id="inputNomeUsuario" class="form-control" placeholder="Nome de usuário" required autofocus><br>
-
-      GENERO DEVE SER APENAS TRES OPCOES, NAO TEXTO ABERTO
-      <label for="inputGenero" class="sr-only">Gênero</label>
-      <input name="gereno" type="text" id="inputGenero" class="form-control" placeholder="Gênero" required autofocus><br>
-
-          RELACAO DEVE SER APENAS TRES OPCOES, NAO TEXTO ABERTO
-      <label for="inputRelacao" class="sr-only">Qual a sua relação com a UNISO?</label>
-      <input type="text" id="inputRelacao" class="form-control" placeholder="Qual a sua relação com a UNISO?" required autofocus><br>
-
-      <label for="inputEmail" class="sr-only">Email</label>
-      <input name="email" type="email" id="inputEmail" class="form-control" placeholder="Email" required autofocus><br>
-
-      <label for="inputSenha" class="sr-only">Senha</label>
-      <input name="password" type="password" id="inputSenha" class="form-control" placeholder="Senha" required><br>
-
-      <label for="inputSenha" class="sr-only">Confirmar senha</label>
-      <input name="password2" type="password" id="inputSenha2" class="form-control" placeholder="Confirmar senha" required><br>
-
-      <div class="checkbox mb-3">
-        <label>
-          <input type="checkbox" value="aceito_termos" required> Eu concordo com os Termos de Uso e Privacidade
-        </label>
-      </div> -->
-
-      <button class="btn btn-lg btn-primary" type="submit">Cadastrar-se</button>
-
-      <!-- <a class="btn btn-lg btn-primary btn-block" href="{% url 'cadastro_motorista' %}">Motorista</a> -->
-      <!-- <a class="btn btn-lg btn-primary btn-block" href="{% url 'login' %}">Já possui uma conta? Faça login</a> -->
-      <!-- <p class="mt-5 mb-3 text-muted">&copy; Unisocar - 2023</p> -->
-  
   </form>
 </div>
 {% endblock %}
-<!-- </body> -->
-
-<!-- </html> -->
 

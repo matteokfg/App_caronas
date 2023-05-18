@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load bootstrap %}
+{% load crispy_forms_tags %}
 
 {% block titulo %}
     <title>Cadastro</title>
@@ -14,7 +14,7 @@
         <div class="container">
             {% csrf_token %}
 
-            {{ form_user|bootstrap}}
+            {{ form_user|crispy }}
 
             <button type="submit" class="btn btn-primary">Cadastrar</button>
         </div>

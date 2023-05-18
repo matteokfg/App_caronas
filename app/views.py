@@ -16,12 +16,12 @@ def inicio_index(request):
 
 def caronas_disponiveis(request):
     caronas = Carona.objects.all() #Carona.objects.all().filter(date_final_carona__lte=timezone.now(), date_inicial_carona__gte=timezone.now()-datetime.timedelta(minutes=30)) <- caronas acontecendo agora e comecadas com 30 minutos antes
-    
+
     caronas_motoristas_id = caronas.values_list('motorista_id', flat=True)
     motoristas = list(Motorista.objects.filter(id__in=caronas_motoristas_id))
-    print(motoristas[0].foto_motorista)
+
     caronas_e_motoristas = zip(list(caronas), motoristas)
-    
+
     return render(request, 'app/caronas_disponiveis.html', {'caronas_e_motoristas': caronas_e_motoristas})
 
 def login_user(request):
@@ -32,7 +32,9 @@ def login_user(request):
         username = request.POST["username"]
         password = request.POST["password"]
         user = authenticate(request, username=username, password=password)
+        print(user)
         if user is not None:
+            print("chaeguei aqui")
             login(request, user)
             return HttpResponseRedirect(reverse('caronas_disponiveis'))
 
@@ -101,23 +103,10 @@ def cadastro(request):
 def cadastro_passageiro(request):
     profile = Profile.objects.get(user_id=request.user.id)
 
-    if request.method == 'POST':
-        profile_form = ProfileForm(request.POST, instance=profile)
-        if profile_form.is_valid():
-            profile_form.save()
-            return HttpResponseRedirect(reverse('caronas_disponiveis'))
-    else:
-        profile_form = ProfileForm(instance=profile)
+    profile_form = ProfileForm(request.POST or None, instance=profile)
+
+    if profile_form.is_valid():
+        profile_form.save()
+        return HttpResponseRedirect(reverse('caronas_disponiveis'))
 
     return render(request, 'app/cadastro_passageiro.html', {'profile_form': profile_form})
-    # form_profile = ProfileForm(request.POST or None)
-    # context = {
-    #     'form_profile': form_profile,
-    # }
-    # if form_profile.is_valid():
-    #     # profile_object = Profile.objects.create(user=request.user, cpf_user=request.POST.get("cpf_user"), relation_with_uniso_user=request.POST.get("relation_with_uniso_user"), genero_user=request.POST.get("genero_user"), eh_motorista=request.POST.get("eh_motorista"))
-    #     profile_object = form_profile.save()
-    #     context['form_profile'] = ProfileForm()
-    #     return HttpResponseRedirect(reverse('caronas_disponiveis'))
-    
-    # return render(request, 'app/cadastro_passageiro.html', context=context)

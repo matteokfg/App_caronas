@@ -79,18 +79,18 @@ class Motorista(models.Model):
     )
 
     foto_motorista = models.FileField(
-        upload_to="static/upload/motorista/",
-        default="upload/foto_em_branco.png",
+        upload_to="uploads/motorista/",
+        default="uploads/foto_em_branco.png",
     )
 
     foto_carro = models.FileField(
-        upload_to="static/upload/carro/",
-        default="upload/foto_em_branco.png",
+        upload_to="uploads/carro/",
+        default="uploads/foto_em_branco.png",
     )
 
     foto_cnh = models.FileField(
-        upload_to="static/upload/documento_cnh/",
-        default="upload/foto_em_branco.png",
+        upload_to="uploads/documento_cnh/",
+        default="uploads/foto_em_branco.png",
     )
 
     placa = models.CharField(
