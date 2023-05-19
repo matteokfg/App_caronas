@@ -5,16 +5,17 @@
     <title>Quer ser Motorista?</title>
 {% endblock %}
 
+
 {% block content %}
 <div class="container">
 <form method="post" class="form-sigin">
-    <label for="">Quer ser motorista no app? </label>
+    <!-- <label for="">Quer ser motorista no app? </label> -->
     {% csrf_token %}
 
     {{ profile_motorista_update_form|crispy }}
 
-    <button class="btn btn-lg btn-primary" type="submit">Próximo</button>
-    <a class="btn btn-lg btn-secondary" href="{% url 'caronas_disponiveis' %}">Voltar</a>
+    <button class="btn btn-primary" type="submit">Próximo</button>
+    <a class="btn btn-secondary" href="{% url 'caronas_disponiveis' %}">Voltar</a>
 </form>
 </div>
 {% endblock %}
