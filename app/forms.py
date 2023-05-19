@@ -35,7 +35,7 @@ class UpdateProfileToMotoristaForm(forms.ModelForm):
 class CaronaForm(forms.ModelForm):
     class Meta:
         model = Carona
-        fields = '__all__'
+        fields = ['motorista', 'inicial_location', 'location_final', 'lotation', 'date_inicial_carona', 'date_final_carona']
 
     def clean(self):
         data = self.cleaned_data
@@ -44,7 +44,7 @@ class CaronaForm(forms.ModelForm):
 class LocalizacaoForm(forms.ModelForm):
     class Meta:
         model = Localizacao
-        fields = '__all__'
+        fields =['latitude', 'longitude']
 
     def clean(self):
         data = self.cleaned_data

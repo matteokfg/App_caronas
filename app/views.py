@@ -18,11 +18,18 @@ def caronas_disponiveis(request):
     caronas = Carona.objects.all() #Carona.objects.all().filter(date_final_carona__lte=timezone.now(), date_inicial_carona__gte=timezone.now()-datetime.timedelta(minutes=30)) <- caronas acontecendo agora e comecadas com 30 minutos antes
 
     caronas_motoristas_id = caronas.values_list('motorista_id', flat=True)
-    motoristas = list(Motorista.objects.filter(id__in=caronas_motoristas_id))
+    motoristas = Motorista.objects.filter(id__in=caronas_motoristas_id)
 
-    caronas_e_motoristas = zip(list(caronas), motoristas)
+    motoristas_profiles_id = motoristas.values_list('profile_id', flat=True)
+    profiles = Profile.objects.filter(id__in=motoristas_profiles_id)
 
-    return render(request, 'app/caronas_disponiveis.html', {'caronas_e_motoristas': caronas_e_motoristas})
+    profiles_users_id = profiles.values_list('user_id', flat=True)
+    users = User.objects.filter(id__in=profiles_users_id)
+
+
+    data_caronas_motoristas_profiles_users = zip(list(caronas), list(motoristas), list(profiles), list(users))
+
+    return render(request, 'app/caronas_disponiveis.html', {'data_caronas_motoristas_profiles_users': data_caronas_motoristas_profiles_users})
 
 def login_user(request):
     if request.user.is_authenticated:
@@ -42,7 +49,7 @@ def logout_user(request):
     logout(request)
     return HttpResponseRedirect(reverse('index'))
 
-def adicionar_carona(request):
+def adicionar_carona_antigo(request):
     if request.user.is_authenticated:
         if request.method == 'GET':
             return render(request, 'app/adicionar_carona.html', {})
@@ -86,13 +93,13 @@ def cadastro(request):
     if request.user.is_authenticated:
         return HttpResponseRedirect(reverse('index'))
 
-    form_user = UserForm(request.POST or None)
+    user_form = UserForm(request.POST or None)
     context = {
-        "form_user": form_user,
+        "user_form": user_form,
     }
-    if form_user.is_valid():
-        user_object = form_user.save()
-        context['form_user'] = UserForm()
+    if user_form.is_valid():
+        user_object = user_form.save()
+        context['user_form'] = UserForm()
         login(request, user_object)
         return HttpResponseRedirect(reverse('cadastro_passageiro'))
     
@@ -142,3 +149,22 @@ def cadastro_motorista(request):
         motorista_form = MotoristaForm(instance=motorista)
     
     return render(request, 'app/cadastro_motorista.html', {'motorista_form': motorista_form})
+
+def adicionar_carona(request):
+    motorista = Motorista.objects.get(profile_id=Profile.objects.get(user_id= request.user.id).id)
+    carona_form = CaronaForm(request.POST or None)
+    print(carona_form)
+    context = {
+        'carona_form': carona_form,
+        'motorista': motorista,
+    }
+    if carona_form.is_valid():
+        print("chaeguei aqui")
+        carona = carona_form.save(commit=False)
+        carona.motorista_id = motorista.id
+        carona.save()
+
+        context['carona_form'] = CaronaForm()
+        return HttpResponseRedirect(reverse('caronas_disponiveis'))
+
+    return render(request, 'app/adicionar_carona.html', context)

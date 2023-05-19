@@ -15,8 +15,8 @@
     <div class="container">
       <div class="row"> <!--row-cols-1 row-cols-sm-2 row-cols-md-3 g-3-->
         <div class="col-md-4">
-          {% for carona, motorista in caronas_e_motoristas %}
-            {% include "app/includes/carona_card.html" with carona=carona motorista=motorista %}
+          {% for carona, motorista, profile, use_r in data_caronas_motoristas_profiles_users %}
+            {% include "app/includes/carona_card.html" with carona=carona motorista=motorista profile=profile use_r=use_r %}
           {% endfor %}
         </div>
     </div>

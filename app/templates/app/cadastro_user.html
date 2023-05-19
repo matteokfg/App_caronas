@@ -17,13 +17,13 @@
 <body>
     <main role="main">
         <div class="container">
-            <h2>Cadastre-se</h2>
+            <h2 class="text-dark">Cadastre-se</h2>
         </div>
         <form method="post" class="">
             <div class="container">
                 {% csrf_token %}
 
-                {{ form_user|crispy }}
+                {{ user_form|crispy }}
 
                 <button type="submit" class="btn btn-primary">Cadastrar</button>
             </div>
