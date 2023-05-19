@@ -103,6 +103,14 @@ class Motorista(models.Model):
     def __str__(self):
         return str(self.profile)
 
+@receiver(post_save, sender=Profile)
+def create_user_motorista(sender, instance, created, **kwargs):
+    if created:
+        Motorista.objects.create(profile=instance)
+# lugar aonde vi essas funcoes: https://simpleisbetterthancomplex.com/tutorial/2016/07/22/how-to-extend-django-user-model.html#onetoone
+@receiver(post_save, sender=Profile)
+def save_user_motorista(sender, instance, **kwargs):
+    instance.motorista.save()
 #<---------------------------------- fim model motorista --------------------------------->
 #<---------------------------------- inicio model localizacao----------------------------->
 class Localizacao(models.Model):

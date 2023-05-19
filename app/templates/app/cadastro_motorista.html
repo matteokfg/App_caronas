@@ -1,88 +1,45 @@
+{% extends 'base.html' %}
 {% load static %}
-<!doctype html>
-<html lang="en">
+{% load crispy_forms_tags %}
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-
+{% block titulo %}
     <title>Cadastro - Motorista</title>
+{% endblock %}
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+{% block estilo %}
+    <style>
+        #id_foto_motorista{
+            height: 40px;
+            width: 350px;
+        }
+        #id_foto_carro{
+            height: 40px;
+            width: 350px;
+        }
+        #id_foto_cnh{
+            height: 40px;
+            width: 350px;
+        }
+        #id_profile{
+            background: #eee;
+            pointer-events: none;
+            touch-action: none;
+        }
+    </style>
+{% endblock %}
 
-    <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-
-    <!-- Custom styles for this template -->
-    <link rel="stylesheet" href="{% static 'css/signin.css' %}">
-</head>
-
-<body class="text-center">
-    <form class="form-signin">
+{% block content %}
+<div class="container">
+    <div class="container">
         <img class="mb-4" src="../../assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
         <h1 class="h3 mb-3 font-weight-normal">Cadastre-se como Passageiro!</h1>
-        <label for="inputNome" class="sr-only">Nome Completo</label>
-        <input type="text" id="inputNome" class="form-control" placeholder="Nome completo" required autofocus><br>
-        <label for="inputGenero" class="sr-only">Gênero</label>
-        <input type="text" id="inputGenero" class="form-control" placeholder="Gênero" required autofocus><br>
-        <label for="inputRelacao" class="sr-only">Qual a sua relação com a UNISO?</label>
-        <input type="text" id="inputRelacao" class="form-control" placeholder="Qual a sua relação com a UNISO?" required
-            autofocus><br>
-        <label for="inputEmail" class="sr-only">Email</label>
-        <input type="email" id="inputEmail" class="form-control" placeholder="Email" required autofocus><br>
-        <label for="inputSenha" class="sr-only">Senha</label>
-        <input type="password" id="inputSenha" class="form-control" placeholder="Senha" required><br>
-        
-        <div class="input-group mb-3">
-            <div class="custom-file">
-                <input type="file" class="custom-file-input" id="inputGroupFile02">
-                <label class="custom-file-label" for="inputGroupFile02"
-                    aria-describedby="inputGroupFileAddon02">CNH</label>
-            </div>
-            <div class="input-group-append">
-                <span class="input-group-text" id="inputGroupFileAddon02">Confirmar</span>
-            </div>
-        </div>
+    </div>
+    <form class="form-signin" method="post">
+        {% csrf_token %}
 
-        <div class="input-group mb-3">
-            <div class="custom-file">
-                <input type="file" class="custom-file-input" id="inputGroupFile02">
-                <label class="custom-file-label" for="inputGroupFile02"
-                    aria-describedby="inputGroupFileAddon02">Fotos do carro</label>
-            </div>
-            <div class="input-group-append">
-                <span class="input-group-text" id="inputGroupFileAddon02">Confirmar</span>
-            </div>
-        </div>
+        {{ motorista_form|crispy }}
 
-        <div class="input-group mb-3">
-            <div class="custom-file">
-                <input type="file" class="custom-file-input" id="inputGroupFile02">
-                <label class="custom-file-label" for="inputGroupFile02"
-                    aria-describedby="inputGroupFileAddon02"> Comprovante de vínculo com a UNISO</label>
-            </div>
-            <div class="input-group-append">
-                <span class="input-group-text" id="inputGroupFileAddon02">Confirmar</span>
-            </div>
-        </div>
-
-
-        <div class="checkbox mb-3">
-            <label>
-                <input type="checkbox" value="remember-me"> Eu concordo com os Termos de Uso e Privacidade
-            </label>
-        </div>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Cadastrar-se</button>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Passageiro</button>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Já possui uma conta? Conecte-se</button>
-        <p class="mt-5 mb-3 text-muted">&copy; Unisocar - 2023</p>
-
-
+        <button class="btn btn-lg btn-primary" type="submit">Cadastrar-se</button>
     </form>
-</body>
-
-</html>
+</div>
+{% endblock %}

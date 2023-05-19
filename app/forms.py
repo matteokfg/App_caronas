@@ -21,11 +21,16 @@ class ProfileForm(forms.ModelForm):
 class MotoristaForm(forms.ModelForm):
     class Meta:
         model = Motorista
-        fields = '__all__'
+        fields = ['profile', 'foto_motorista', 'foto_carro', 'foto_cnh', 'placa']
 
     def clean(self):
         data = self.cleaned_data
         pass
+
+class UpdateProfileToMotoristaForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = ['eh_motorista']
 
 class CaronaForm(forms.ModelForm):
     class Meta:

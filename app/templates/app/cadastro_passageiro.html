@@ -24,13 +24,12 @@
     <img class="mb-4" src="../../assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
     <h1 class="h3 mb-3 font-weight-normal">Continue seu cadastro como Passageiro!</h1>
   </div>
-  <form class="form-sigin" method="post" onload="auto_preencher_input()">
+  <form class="form-sigin" method="post">
       {% csrf_token %}
 
       {{ profile_form|crispy }}
 
       <button class="btn btn-lg btn-primary" type="submit">Cadastrar</button>
-
   </form>
 </div>
 {% endblock %}
