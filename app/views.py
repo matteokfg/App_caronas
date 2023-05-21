@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout, get_user_model
-from .forms import UserForm, ProfileForm, MotoristaForm, CaronaForm, LocalizacaoForm, UpdateProfileToMotoristaForm
+from .forms import UserForm, ProfileForm, MotoristaForm, CaronaForm, LocalizacaoForm, UpdateProfileToMotoristaForm, UpdateUserForm, UpdateProfileForm, UpdateMotoristaForm
 
 #This file defines the view functions for the app. View functions are Python functions that handle HTTP requests and return HTTP responses. 
 #In this file, we define a single view function called 'caronas_disp'. This function takes a request object as its argument and returns a rendered HTML template using the 'render' shortcut function. The rendered template is the 'index.html' template located in the 'app' directory.
@@ -155,3 +155,46 @@ def adicionar_carona(request):
         return HttpResponseRedirect(reverse('caronas_disponiveis'))
 
     return render(request, 'app/adicionar_carona.html', context)
+
+
+def minha_conta(request):
+    return render(request, 'app/minha_conta.html', {})
+
+
+def atualizar_dados(request):
+    profile = Profile.objects.get(user_id=request.user.id)
+    motorista = Motorista.objects.get(profile_id=profile.id)
+
+    if request.method == 'POST':
+        user_form = UpdateUserForm(request.POST, instance=request.user)
+        profile_form = UpdateProfileForm(request.POST, instance=profile)
+        motorista_form = UpdateMotoristaForm(request.POST, instance=motorista)
+
+        if user_form.has_changed():
+            if user_form.is_valid():
+                user_form.save(update_fields=user_form.changed_data)
+        if profile_form.has_changed():
+            if profile_form.is_valid():
+                profile_form.save(update_fields=user_form.changed_data)
+        if motorista_form.has_changed():
+            if motorista_form.is_valid():
+                motorista_form.save(update_fields=user_form.changed_data)
+        if user_form.is_valid() or profile_form.is_valid() or motorista_form.is_valid():
+            return HttpResponseRedirect(reverse('minha_conta'))
+        
+    else:
+        user_form = UpdateUserForm(instance=request.user)
+        profile_form = UpdateProfileForm(instance=profile)
+        motorista_form = UpdateMotoristaForm(instance=motorista)
+
+    context = {
+        'user_form': user_form,
+        'profile_form': profile_form,
+        'motorista_form': motorista_form,
+        'profile': profile,
+    }
+    return render(request, 'app/atualizar_dados.html', context)
+
+
+def alterar_senha(request):
+    return render(request, 'app/alterar_senha.html', {})
