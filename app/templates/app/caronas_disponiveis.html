@@ -9,6 +9,10 @@
   <link rel="stylesheet" href="{% static 'css/caronas_disponiveis_style.css' %}"/>
 {% endblock %}
 
+{% block navbar %}
+  {% include "app/includes/navbar.html" with profile=profile %}
+{% endblock %}
+
 {% block content %}
   <h1 class="text-center my-5">Caronas Disponíveis</h1>
   <!-- <div class="album py-5 bg-light"> -->

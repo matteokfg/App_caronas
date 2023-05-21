@@ -1,0 +1,39 @@
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-color">
+    <a class="navbar-brand" href="{% url 'index' %}">Unisocar</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+      <ul class="navbar-nav ml-auto">
+        {% if request.user.is_authenticated %}
+            <li class="nav-item">
+            <a href="{% url 'caronas_disponiveis' %}" class="nav-link font-weight-bold">Caronas Disponíveis</a>
+            </li>
+
+            {% if profile.eh_motorista %}
+                <li class="nav-item">
+                <a href="{% url 'adicionar_carona' %}" class="nav-link font-weight-bold">Adicionar Carona</a>
+                </li>
+
+            {% else %}
+                <li class="nav-item">
+                <a href="{% url 'cadastro_ser_motorista' %}" class="nav-link font-weight-bold">Cadastro como Motorista</a>
+                </li>
+                
+            {% endif %}
+
+            <li class="nav-item">
+            <a class="nav-link font-weight-bold" href="{% url 'logout' %}">Logout</a>
+            </li>
+        
+        {% else %}
+            <li class="nav-item">
+            <a class="nav-link font-weight-bold" href="{% url 'login' %}">Login</a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link font-weight-bold" href="{% url 'cadastro' %}">Cadastre-se</a>
+            </li>
+        {% endif %}
+      </ul>
+    </div>
+  </nav>

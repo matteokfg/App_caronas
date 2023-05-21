@@ -51,7 +51,10 @@ class Profile(models.Model):
         help_text="Coluna com o genero do usuario",
     )
 
-    eh_motorista = models.BooleanField(null=True)
+    eh_motorista = models.BooleanField(
+        null=True,
+        verbose_name="Quer ser motorista?"
+    )
 
     def __str__(self):
         return self.user.username
@@ -129,6 +132,10 @@ class Localizacao(models.Model):
         verbose_name="Longitude",
         help_text="Representa a parte da coordenada, Longitude (em float), retornada pela API",
     )
+
+    def location(self):
+        # metodo retorna coordenadas
+        return f"Localizacao: {self.latitude} {self.longitude}"
 #<---------------------------------- fim model localizacao-------------------------------->
 #<---------------------------------- model carona ---------------------------------------->
 
