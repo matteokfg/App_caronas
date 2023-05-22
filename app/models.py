@@ -77,13 +77,15 @@ class Motorista(models.Model):
     profile = models.OneToOneField(
         Profile,
         on_delete=models.PROTECT,
+        related_name="motorista",
         verbose_name="ID",
         help_text="Coluna com o id do usuario que e motorista",
     )
 
-    foto_motorista = models.FileField(
-        upload_to="uploads/motorista/",
-        default="uploads/foto_em_branco.png",
+    foto_motorista = models.ImageField(
+        upload_to="uploads/foto_motorista/",
+        blank=True,
+        null=True,
     )
 
     foto_carro = models.FileField(
