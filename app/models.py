@@ -17,13 +17,13 @@ class Profile(models.Model):
     user = models.OneToOneField(
         User, 
         on_delete=models.PROTECT,
-        verbose_name="user_fk",
-        help_text="Chave estrangeira conectando o user do django ao perfil do usuario",
+        verbose_name="Usuário",
+        help_text="Chave estrangeira conectando o usuário do django ao perfil do usuário.",
     )
 
     cpf_user = BRCPFField(
         verbose_name="CPF",
-        help_text="Coluna com CPF do usuario",
+        help_text="Coluna com CPF do usuário.",
     )
 
     RELATION_WITH_UNISO = (
@@ -35,8 +35,8 @@ class Profile(models.Model):
     relation_with_uniso_user = models.CharField(
         max_length=1,
         choices=RELATION_WITH_UNISO,
-        verbose_name="Relacao UNISO",
-        help_text="Coluna com a relacao do usuario com a UNISO",
+        verbose_name="Relação com a UNISO",
+        help_text="Coluna com a relação do usuário com a UNISO.",
     )
 
     GENERO = (
@@ -47,8 +47,8 @@ class Profile(models.Model):
     genero_user = models.CharField(
         max_length=1,
         choices=GENERO,
-        verbose_name="Genero",
-        help_text="Coluna com o genero do usuario",
+        verbose_name="Gênero",
+        help_text="Coluna com o gênero do usuário.",
     )
 
     eh_motorista = models.BooleanField(
@@ -99,7 +99,7 @@ class Motorista(models.Model):
     placa = models.CharField(
         default='AAA-0000',
         max_length=8,
-        verbose_name="Placa",
+        verbose_name="Placa do carro",
         help_text="Coluna com a placa do carro da carona, sendo padrao: 'XXX-0000'.",
     )
 
