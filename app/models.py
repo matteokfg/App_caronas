@@ -17,6 +17,7 @@ class Profile(models.Model):
     user = models.OneToOneField(
         User, 
         on_delete=models.PROTECT,
+        related_name="use_r",
         verbose_name="Usuário",
         help_text="Chave estrangeira conectando o usuário do django ao perfil do usuário.",
     )
@@ -88,14 +89,16 @@ class Motorista(models.Model):
         null=True,
     )
 
-    foto_carro = models.FileField(
-        upload_to="uploads/carro/",
-        default="uploads/foto_em_branco.png",
+    foto_carro = models.ImageField(
+        upload_to="uploads/foto_carro/",
+        blank=True,
+        null=True,
     )
 
-    foto_cnh = models.FileField(
-        upload_to="uploads/documento_cnh/",
-        default="uploads/foto_em_branco.png",
+    foto_cnh = models.ImageField(
+        upload_to="uploads/foto_documento_cnh/",
+        blank=True,
+        null=True,
     )
 
     placa = models.CharField(
