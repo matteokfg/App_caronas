@@ -17,19 +17,23 @@ def inicio_index(request):
 
 def caronas_disponiveis(request):
     profile = Profile.objects.get(user_id=request.user.id)
-    caronas = Carona.objects.all() #Carona.objects.all().filter(date_final_carona__lte=timezone.now(), date_inicial_carona__gte=timezone.now()-datetime.timedelta(minutes=30)) <- caronas acontecendo agora e comecadas com 30 minutos antes
 
-    caronas_motoristas_id = caronas.values_list('motorista_id', flat=True)
-    motoristas = Motorista.objects.filter(id__in=caronas_motoristas_id)
+    caronas = list(Carona.objects.all()) #Carona.objects.all().filter(date_final_carona__lte=timezone.now(), date_inicial_carona__gte=timezone.now()-datetime.timedelta(minutes=30)) <- caronas acontecendo agora e comecadas com 30 minutos antes
+    motoristas = []
+    profiles = []
+    user_s = []
 
-    motoristas_profiles_id = motoristas.values_list('profile_id', flat=True)
-    profiles = Profile.objects.filter(id__in=motoristas_profiles_id)
+    for carona in caronas:
+        motorista = Motorista.objects.get(id=carona.motorista_id)
+        motoristas.append(motorista)
+    for m in motoristas:
+        profile = Profile.objects.get(id=m.profile_id)
+        profiles.append(profile)
+    for p in profiles:
+        use_r = User.objects.get(id=p.user_id)
+        user_s.append(use_r)
 
-    profiles_users_id = profiles.values_list('user_id', flat=True)
-    users = User.objects.filter(id__in=profiles_users_id)
-
-
-    data_caronas_motoristas_profiles_users = zip(list(caronas), list(motoristas), list(profiles), list(users))
+    data_caronas_motoristas_profiles_users = zip(caronas, motoristas, profiles, user_s)
 
     context = {
         'data_caronas_motoristas_profiles_users': data_caronas_motoristas_profiles_users,

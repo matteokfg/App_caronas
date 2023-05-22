@@ -146,7 +146,7 @@ class Carona(models.Model):
         Motorista,
         on_delete=models.PROTECT,
         verbose_name="Usuario",
-        help_text="Coluna com o motorista da carona",
+        help_text="Coluna com o motorista da carona.",
     )
 
     #localizacao inicial do carro, faz referencia a tabela que guarda as coordenadas (https://docs.djangoproject.com/en/dev/topics/db/queries/#backwards-related-objects)
@@ -155,8 +155,8 @@ class Carona(models.Model):
         on_delete=models.PROTECT,
         related_name="localizacao_inicial",
         null=True,
-        verbose_name="Localizacao inicial",
-        help_text="Coluna com oa localizacao(latitude e longitude) inicial da carona",
+        verbose_name="Localização inicial",
+        help_text="Coluna com oa localização (latitude e longitude) inicial da carona.",
     )  
 
     #localizacao destino da carona ,faz referencia a tabela que guarda a localizacao
@@ -165,7 +165,7 @@ class Carona(models.Model):
         on_delete=models.PROTECT,
         null=True,
         verbose_name="Localizacao final",
-        help_text="Coluna com oa localizacao(latitude e longitude) final da carona",
+        help_text="Coluna com oa localização (latitude e longitude) final da carona.",
     )
 
 
@@ -181,19 +181,19 @@ class Carona(models.Model):
         choices=Lotacao.choices,
         default=Lotacao.MAIS_TRES,
         verbose_name="Lotacao",
-        help_text="Coluna com o numero da lotacao do carro da carona",
+        help_text="Coluna com o número da lotação do carro da carona.",
     )
 
     date_inicial_carona = models.DateTimeField(
         default=timezone.now,
         verbose_name="Data de inicio",
-        help_text="Data e hora iniciais da carona",
+        help_text="Data e hora iniciais da carona.",
     )
 
     date_final_carona = models.DateTimeField(
         default=timezone.now,
         verbose_name="Data final",
-        help_text="Data e hora finais da carona",
+        help_text="Data e hora finais da carona.",
     )
 
     @property
