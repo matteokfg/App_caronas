@@ -17,13 +17,13 @@ class Profile(models.Model):
     user = models.OneToOneField(
         User, 
         on_delete=models.PROTECT,
-        verbose_name="user_fk",
-        help_text="Chave estrangeira conectando o user do django ao perfil do usuario",
+        verbose_name="Usuário",
+        help_text="Chave estrangeira conectando o usuário do django ao perfil do usuário.",
     )
 
     cpf_user = BRCPFField(
-        verbose_name="CPF_pk",
-        help_text="Coluna com CPF do usuario",
+        verbose_name="CPF",
+        help_text="Coluna com CPF do usuário.",
     )
 
     RELATION_WITH_UNISO = (
@@ -35,8 +35,8 @@ class Profile(models.Model):
     relation_with_uniso_user = models.CharField(
         max_length=1,
         choices=RELATION_WITH_UNISO,
-        verbose_name="Relacao UNISO",
-        help_text="Coluna com a relacao do usuario com a UNISO",
+        verbose_name="Relação com a UNISO",
+        help_text="Coluna com a relação do usuário com a UNISO.",
     )
 
     GENERO = (
@@ -47,11 +47,14 @@ class Profile(models.Model):
     genero_user = models.CharField(
         max_length=1,
         choices=GENERO,
-        verbose_name="Genero",
-        help_text="Coluna com o genero do usuario",
+        verbose_name="Gênero",
+        help_text="Coluna com o gênero do usuário.",
     )
 
-    eh_motorista = models.BooleanField(null=True)
+    eh_motorista = models.BooleanField(
+        null=True,
+        verbose_name="Quer ser motorista?"
+    )
 
     def __str__(self):
         return self.user.username
@@ -79,30 +82,38 @@ class Motorista(models.Model):
     )
 
     foto_motorista = models.FileField(
-        upload_to="static/upload/motorista/",
-        default="upload/foto_em_branco.png",
+        upload_to="uploads/motorista/",
+        default="uploads/foto_em_branco.png",
     )
 
     foto_carro = models.FileField(
-        upload_to="static/upload/carro/",
-        default="upload/foto_em_branco.png",
+        upload_to="uploads/carro/",
+        default="uploads/foto_em_branco.png",
     )
 
     foto_cnh = models.FileField(
-        upload_to="static/upload/documento_cnh/",
-        default="upload/foto_em_branco.png",
+        upload_to="uploads/documento_cnh/",
+        default="uploads/foto_em_branco.png",
     )
 
     placa = models.CharField(
         default='AAA-0000',
         max_length=8,
-        verbose_name="Placa",
+        verbose_name="Placa do carro",
         help_text="Coluna com a placa do carro da carona, sendo padrao: 'XXX-0000'.",
     )
 
     def __str__(self):
         return str(self.profile)
 
+@receiver(post_save, sender=Profile)
+def create_user_motorista(sender, instance, created, **kwargs):
+    if created:
+        Motorista.objects.create(profile=instance)
+# lugar aonde vi essas funcoes: https://simpleisbetterthancomplex.com/tutorial/2016/07/22/how-to-extend-django-user-model.html#onetoone
+@receiver(post_save, sender=Profile)
+def save_user_motorista(sender, instance, **kwargs):
+    instance.motorista.save()
 #<---------------------------------- fim model motorista --------------------------------->
 #<---------------------------------- inicio model localizacao----------------------------->
 class Localizacao(models.Model):
@@ -121,6 +132,10 @@ class Localizacao(models.Model):
         verbose_name="Longitude",
         help_text="Representa a parte da coordenada, Longitude (em float), retornada pela API",
     )
+
+    def location(self):
+        # metodo retorna coordenadas
+        return f"Localizacao: {self.latitude} {self.longitude}"
 #<---------------------------------- fim model localizacao-------------------------------->
 #<---------------------------------- model carona ---------------------------------------->
 
@@ -131,7 +146,7 @@ class Carona(models.Model):
         Motorista,
         on_delete=models.PROTECT,
         verbose_name="Usuario",
-        help_text="Coluna com o motorista da carona",
+        help_text="Coluna com o motorista da carona.",
     )
 
     #localizacao inicial do carro, faz referencia a tabela que guarda as coordenadas (https://docs.djangoproject.com/en/dev/topics/db/queries/#backwards-related-objects)
@@ -140,8 +155,8 @@ class Carona(models.Model):
         on_delete=models.PROTECT,
         related_name="localizacao_inicial",
         null=True,
-        verbose_name="Localizacao inicial",
-        help_text="Coluna com oa localizacao(latitude e longitude) inicial da carona",
+        verbose_name="Localização inicial",
+        help_text="Coluna com oa localização (latitude e longitude) inicial da carona.",
     )  
 
     #localizacao destino da carona ,faz referencia a tabela que guarda a localizacao
@@ -150,7 +165,7 @@ class Carona(models.Model):
         on_delete=models.PROTECT,
         null=True,
         verbose_name="Localizacao final",
-        help_text="Coluna com oa localizacao(latitude e longitude) final da carona",
+        help_text="Coluna com oa localização (latitude e longitude) final da carona.",
     )
 
 
@@ -166,19 +181,19 @@ class Carona(models.Model):
         choices=Lotacao.choices,
         default=Lotacao.MAIS_TRES,
         verbose_name="Lotacao",
-        help_text="Coluna com o numero da lotacao do carro da carona",
+        help_text="Coluna com o número da lotação do carro da carona.",
     )
 
     date_inicial_carona = models.DateTimeField(
         default=timezone.now,
         verbose_name="Data de inicio",
-        help_text="Data e hora iniciais da carona",
+        help_text="Data e hora iniciais da carona.",
     )
 
     date_final_carona = models.DateTimeField(
         default=timezone.now,
         verbose_name="Data final",
-        help_text="Data e hora finais da carona",
+        help_text="Data e hora finais da carona.",
     )
 
     @property

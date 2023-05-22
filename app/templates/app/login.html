@@ -1,9 +1,9 @@
 {% load static %}
+
 <!doctype html>
 <html lang="en">
 
 <head>
-  <!-- <link rel="stylesheet" href="style.css"> -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
@@ -22,7 +22,7 @@
 
 <body class="text-center">
   <div class="container">
-    <img class="mb-4" src="../../assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
+    <img class="mb-4" src="../../../media/logo-unisocar.png" alt="" width="72" height="72">
     <h1 class="h3 mb-3 font-weight-normal">Faça Login e aproveite o UnisoCar!</h1>
 
     <form class="form-signin" method="post" action="/login">
@@ -32,16 +32,11 @@
       <input name="username" type="text" id="inputNome" class="form-control" placeholder="Nome" required autofocus><br>
       <label for="inputSenha" class="sr-only">Senha</label>
       <input name="password" type="password" id="inputSenha" class="form-control" placeholder="Senha" required><br>
-      <!-- <div class="checkbox mb-3">
-        <label>
-          <input type="checkbox" value="termos"> Li e estou de acordo com o <a href="">Termo de Uso e Política de Privacidade</a> 
-        </label>
-      </div> -->
+
       <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button> <br>
       <p>Não possui conta? <a href="{% url 'cadastro' %}">Cadastre-se</a> </p>
-      <p class="mt-5 mb-3 text-muted">&copy; Unisocar - 2023</p>
+      <p class="mt-5 mb-3 text-muted">&copy; Unisocar</p>
     </form>
-
   </div>
 </body>
 </html>

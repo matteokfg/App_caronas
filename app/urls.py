@@ -10,11 +10,16 @@ urlpatterns = [
     path('login', views.login_user, name='login'),
     path('logout', views.logout_user, name='logout'),
 
-    path('cadastro', views.cadastro_passageiro, name='cadastro'),
+    path('cadastro', views.cadastro, name='cadastro'),
+    path('cadastro/passageiro', views.cadastro_passageiro, name='cadastro_passageiro'),
     path('cadastro/motorista', views.cadastro_motorista, name='cadastro_motorista'),
+    path('cadastro/ser_motorista', views.passageiro_to_motorista, name='cadastro_ser_motorista'),
 
     path('caronas_disponiveis', views.caronas_disponiveis, name='caronas_disponiveis'),
-    path('adicionar_carona', views.adicionar_carona, name='adicionar_carona')
 
+    path('adicionar_carona', views.adicionar_carona, name='adicionar_carona'),
 
+    path('minha_conta', views.minha_conta, name='minha_conta'),
+    path('minha_conta/atualizar_dados', views.atualizar_dados, name='atualizar_dados'),
+    path('minha_conta/alterar_senha', views.alterar_senha, name='alterar_senha'),
 ]

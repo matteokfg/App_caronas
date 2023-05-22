@@ -1,67 +1,23 @@
+{% extends 'base.html' %}
+{% load static %}
 
-<!DOCTYPE html>
-<html lang="pt-br">
 
-<head>
-  <meta charset="UTF-8" />
+{% block titulo %}
   <title>Minha Conta</title>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
-  <link rel="stylesheet" href="minha_conta.css">
-</head>
-<body>
-  <br>
-  <div class="container">
-    <h1 class="text-dark">Minha Conta</h1>
-    <br>
-    <div class="row align-items-center justify-content-center" style="max-width: 300px; margin: 0 auto;">
-      <div class="input-group mb-3">
-        <div class="custom-file">
-          <input type="file" class="custom-file-input" id="inputGroupFile02">
-          <label class="custom-file-label" for="inputGroupFile02" aria-describedby="inputGroupFileAddon02">Adicione uma
-            foto de perfil</label>
-        </div>
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="localizacao" class="text-primary" tabindex="0">Nome Completo</label>
-      <input type="text" class="form-control" id="name" placeholder="Nome" tabindex="1" required />
-    </div>
-    <div class="form-group">
-      <label for="destino" class="text-primary">Email</label>
-      <input type="text" class="form-control" id="email" placeholder="Email" />
-    </div>
+{% endblock %}
 
-    <div class="form-group">
-      <label for="placa" class="text-primary">Gênero</label>
-      <div class="input-group mb-3">
-        <select class="custom-select" id="inputGroupSelect02">
-          <option selected>Gênero</option>
-          <option value="1">Feminino</option>
-          <option value="2">Masculino</option>
-          <option value="3">Outro</option>
-        </select>
-      </div>
-    </div>
-    <div class="form-group">
-      <label for="placa" class="text-primary">Relação com a UNISO</label>
-      <div class="input-group mb-3">
-        <select class="custom-select" id="inputGroupSelect02">
-          <option selected>Qual é a sua relação com a UNISO?</option>
-          <option value="1">Aluno</option>
-          <option value="2">Funcionário</option>
-          <option value="3">Terceiros</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="lotacao" class="text-primary">Deseja alterar sua senha?</label>
-        <input type="password" id="inputSenha" class="form-control" placeholder="Senha" required>
-      </div>
-      <br>
-      <div class="row align-items-center justify-content-center" style="max-width: 300px; margin: 0 auto;">
-        <button type="submit" class="btn btn-warning mr-3">
-          Salvar
-        </button>
-      </div>
-    </div>
-</body>
-</html>
+
+{% block navbar %}
+  {% include "app/includes/navbar.html" with profile=profile %}
+{% endblock %}
+
+
+{% block content %}
+  <div class="container">
+    <h1>Minha Conta</h1>
+    <br>
+    <a href="{% url 'atualizar_dados' %}" class="btn btn-primary btn-lg btn-block">Atualizar dados cadastrais</a>
+    <a href="#" class="btn btn-primary btn-lg btn-block">Termos de Uso e Privacidade</a>
+    <a href="{% url 'alterar_senha' %}" class="btn btn-warning btn-lg btn-block">Alterar senha</a>
+  </div>
+{% endblock %}
