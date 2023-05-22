@@ -27,8 +27,8 @@ def caronas_disponiveis(request):
         motorista = Motorista.objects.get(id=carona.motorista_id)
         motoristas.append(motorista)
     for m in motoristas:
-        profile = Profile.objects.get(id=m.profile_id)
-        profiles.append(profile)
+        profile_s = Profile.objects.get(id=m.profile_id)
+        profiles.append(profile_s)
     for p in profiles:
         use_r = User.objects.get(id=p.user_id)
         user_s.append(use_r)
