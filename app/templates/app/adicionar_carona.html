@@ -6,15 +6,16 @@
   <title>Adicionar Carona</title>
 {% endblock %}
 
-<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/> -->
 
 {% block estilo %}
   <link rel="stylesheet" href="{% static 'css/adicionar_carona.css' %}">
 {% endblock %}
 
+
 {% block navbar %}
   {% include "app/includes/navbar.html" with profile=profile %}
 {% endblock %}
+
 
 {% block content %}
   <div class="container">
@@ -36,6 +37,7 @@
     </form>
   </div>
 {% endblock %}
+
 
 {% block javascript %}
 <script>

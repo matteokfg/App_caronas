@@ -14,7 +14,7 @@ from .forms import UserForm, ProfileForm, MotoristaForm, CaronaForm, Localizacao
 def inicio_index(request):
     return render(request, 'app/index.html', {})
 
-
+@login_required
 def caronas_disponiveis(request):
     profile = Profile.objects.get(user_id=request.user.id)
 
@@ -56,7 +56,7 @@ def login_user(request):
 
     return render(request, 'app/login.html', {})
 
-
+@login_required
 def logout_user(request):
     logout(request)
     return HttpResponseRedirect(reverse('index'))
@@ -78,7 +78,7 @@ def cadastro(request):
     
     return render(request, 'app/cadastro_user.html', context=context)
 
-
+@login_required
 def cadastro_passageiro(request):
     profile = Profile.objects.get(user_id=request.user.id)
 
@@ -98,7 +98,7 @@ def cadastro_passageiro(request):
 
     return render(request, 'app/cadastro_passageiro.html', {'profile_form': profile_form})
 
-
+@login_required
 def passageiro_to_motorista(request):
     profile = Profile.objects.get(user_id=request.user.id)
 
@@ -118,7 +118,7 @@ def passageiro_to_motorista(request):
 
     return render(request, 'app/ser_motorista.html', context)
 
-
+@login_required
 def cadastro_motorista(request):
     profile = Profile.objects.get(user_id=request.user.id)
     motorista = Motorista.objects.get(profile_id=profile.id)
@@ -139,7 +139,7 @@ def cadastro_motorista(request):
     
     return render(request, 'app/cadastro_motorista.html', context)
 
-
+@login_required
 def adicionar_carona(request):
     # localizacoes = Localizacao.objects.all()
     profile = Profile.objects.get(user_id= request.user.id)
@@ -161,11 +161,11 @@ def adicionar_carona(request):
 
     return render(request, 'app/adicionar_carona.html', context)
 
-
+@login_required
 def minha_conta(request):
     return render(request, 'app/minha_conta.html', {})
 
-
+@login_required
 def atualizar_dados(request):
     profile = Profile.objects.get(user_id=request.user.id)
     motorista = Motorista.objects.get(profile_id=profile.id)
@@ -199,6 +199,6 @@ def atualizar_dados(request):
     }
     return render(request, 'app/atualizar_dados.html', context)
 
-
+@login_required
 def alterar_senha(request):
     return render(request, 'app/alterar_senha.html', {})

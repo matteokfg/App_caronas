@@ -1,24 +1,26 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 
+
 {% block titulo %}
     <title>Quer ser Motorista?</title>
 {% endblock %}
+
 
 {% block navbar %}
   {% include "app/includes/navbar.html" with profile=profile %}
 {% endblock %}
 
+
 {% block content %}
-<div class="container">
-<form method="post" class="form-sigin">
-    <!-- <label for="">Quer ser motorista no app? </label> -->
-    {% csrf_token %}
+  <div class="container">
+  <form method="post" class="form-sigin">
+      {% csrf_token %}
 
-    {{ profile_motorista_update_form|crispy }}
+      {{ profile_motorista_update_form|crispy }}
 
-    <button class="btn btn-primary" type="submit">Próximo</button>
-    <a class="btn btn-secondary" href="{% url 'caronas_disponiveis' %}">Voltar</a>
-</form>
-</div>
+      <button class="btn btn-primary" type="submit">Próximo</button>
+      <a class="btn btn-secondary" href="{% url 'caronas_disponiveis' %}">Voltar</a>
+  </form>
+  </div>
 {% endblock %}
