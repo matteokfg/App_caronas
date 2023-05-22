@@ -91,6 +91,7 @@ def cadastro_passageiro(request):
             if ehs_motorista:
                 form_profile.save()
                 return HttpResponseRedirect(reverse('cadastro_motorista'))
+            form_profile.save()
             return HttpResponseRedirect(reverse('caronas_disponiveis'))
     else:
         profile_form = ProfileForm(instance=profile)
@@ -174,15 +175,14 @@ def atualizar_dados(request):
         profile_form = UpdateProfileForm(request.POST, instance=profile)
         motorista_form = UpdateMotoristaForm(request.POST, instance=motorista)
 
-        if user_form.has_changed():
-            if user_form.is_valid():
-                user_form.save(update_fields=user_form.changed_data)
-        if profile_form.has_changed():
-            if profile_form.is_valid():
-                profile_form.save(update_fields=user_form.changed_data)
-        if motorista_form.has_changed():
-            if motorista_form.is_valid():
-                motorista_form.save(update_fields=user_form.changed_data)
+        if user_form.is_valid():
+            user_form.save()
+
+        if profile_form.is_valid():
+            profile_form.save()
+
+        if motorista_form.is_valid():
+            motorista_form.save()
         if user_form.is_valid() or profile_form.is_valid() or motorista_form.is_valid():
             return HttpResponseRedirect(reverse('minha_conta'))
         
