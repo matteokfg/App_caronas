@@ -4,9 +4,12 @@ from .models import Carona, Motorista, User, Profile, Localizacao
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import authenticate, login, logout, get_user_model
+from django.contrib.auth import authenticate, login, logout
 from .forms import UserForm, ProfileForm, MotoristaForm, CaronaForm, LocalizacaoForm, UpdateProfileToMotoristaForm, UpdateUserForm, UpdateProfileForm, UpdateMotoristaForm
-
+# alterar senha
+from django.contrib import messages
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
 
 def inicio_index(request):
     return render(request, 'app/index.html', {})
@@ -162,7 +165,8 @@ def atualizar_dados(request):
         if motorista_form.is_valid():
             motorista_form.save()
         if user_form.is_valid() or profile_form.is_valid() or motorista_form.is_valid():
-            return HttpResponseRedirect(reverse('minha_conta'))
+            messages.success(request, 'Your password was successfully updated!')
+            return HttpResponseRedirect(reverse('caronas_disponiveis'))
         
     else:
         user_form = UpdateUserForm(instance=request.user)
@@ -179,4 +183,18 @@ def atualizar_dados(request):
 
 @login_required
 def alterar_senha(request):
-    return render(request, 'app/alterar_senha.html', {})
+    profile = Profile.objects.get(user_id=request.user.id)
+    if request.method == 'POST':
+        form_alterar_senha = PasswordChangeForm(request.user, request.POST)
+        if form_alterar_senha.is_valid():
+            user = form_alterar_senha.save()
+            update_session_auth_hash(request, user)
+            return HttpResponseRedirect(reverse('caronas_disponiveis'))
+    else:
+        form_alterar_senha = PasswordChangeForm(request.user)
+
+    context = {
+        'form_alterar_senha': form_alterar_senha,
+        'profile': profile,
+    }
+    return render(request, 'app/alterar_senha.html', context)
