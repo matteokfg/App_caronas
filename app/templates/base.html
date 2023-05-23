@@ -14,7 +14,9 @@
   <!-- Bootstrap core CSS -->
   <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
 
-  <link rel="stylesheet" href="{% static 'css/index.css' %}">
+  <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+
+  <link rel="stylesheet" href="{% static 'css/navbar.css' %}">
 
   {% block estilo %}
   {% endblock %}
@@ -33,10 +35,15 @@
   </main>
 
   <!-- FOOTER -->
-  <footer class="footer">
-    <div class="container">
-      <p class="float-right"><a href="#">Voltar ao topo</a></p>
-      <p>© Unisocar S.A. <a href="#">Privacidade</a> · <a href="nav">Termos</a></p>
+  <footer class="rodape">
+    <div class="container d-flex align-items-center h-100">
+      <div class="row w-100">
+        <div class="col-12 text-center">
+          <div class="d-flex justify-content-center">
+            <p class="text-white">&copy; 2023 - Unisocar - <a href="#" class="termos">Privacidade</a> - <a href="#" class="termos">Termos</a></p>
+          </div>
+        </div>
+      </div>
     </div>
   </footer>
 

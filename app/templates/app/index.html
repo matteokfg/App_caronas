@@ -6,6 +6,9 @@
 <title>Unisocar</title>
 {% endblock %}
 
+{% block estilo %}
+  <link rel="stylesheet" href="{% static 'css/index.css' %}">
+{% endblock %}
 
 {% block navbar %}
   {% include "app/includes/navbar.html" with profile=profile %}

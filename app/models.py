@@ -17,7 +17,7 @@ class Profile(models.Model):
     user = models.OneToOneField(
         User, 
         on_delete=models.PROTECT,
-        related_name="use_r",
+        related_name="profile",
         verbose_name="Usuário",
         help_text="Chave estrangeira conectando o usuário do django ao perfil do usuário.",
     )
