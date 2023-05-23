@@ -128,14 +128,14 @@ class Localizacao(models.Model):
         max_digits=11,
         decimal_places=7,
         verbose_name="Latitude",
-        help_text="Representa a parte da coordenada, Latitude (em float), retornada pela API",
+        help_text="Representa a parte da coordenada: Latitude.",
     )
 
     longitude = models.DecimalField(
         max_digits=11,
         decimal_places=7,
         verbose_name="Longitude",
-        help_text="Representa a parte da coordenada, Longitude (em float), retornada pela API",
+        help_text="Representa a parte da coordenada: Longitude.",
     )
 
     def location(self):

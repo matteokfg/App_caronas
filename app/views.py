@@ -147,6 +147,19 @@ def adicionar_carona(request):
     return render(request, 'app/adicionar_carona.html', context)
 
 @login_required
+def adicionar_localizacao(request):
+    if request.method == 'POST':
+        locali_form = LocalizacaoForm(request.POST)
+
+        if locali_form.is_valid():
+            locali_form.save()
+            return HttpResponseRedirect(reverse('adicionar_carona'))
+    else:
+        locali_form = LocalizacaoForm()
+
+    return render(request, 'app/adicionar_localizacao.html', {'locali_form': locali_form})
+
+@login_required
 def atualizar_dados(request):
     profile = Profile.objects.get(user_id=request.user.id)
     motorista = Motorista.objects.get(profile_id=profile.id)

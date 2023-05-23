@@ -2,6 +2,7 @@
 {% load static %}
 {% load crispy_forms_tags %}
 
+
 {% block titulo %}
   <title>Adicionar Carona</title>
 {% endblock %}
@@ -24,6 +25,7 @@
     <div class="thumbnail-container">
       <img src="{{ motorista.foto_motorista.url }}" alt="Foto de perfil" class="img-thumbnail thumbnail-image"/>
     </div>
+    <a href="{% url 'adicionar_localizacao' %}" class="btn btn-sm btn-secondary" style="position: absolute; right: 330px; top: 310px">Adicionar localizacao</a>
     <form method="post">
       {% csrf_token %}
 
@@ -31,7 +33,7 @@
       
       <div class="submit-buttons">
         <button type="submit" class="btn btn-warning mr-3">Adicionar</button>
-        <button type="reset" class="btn btn-danger">Apagar</button>
+        <button type="reset" class="btn btn-danger">Resetar</button>
         <a href="{% url 'caronas_disponiveis' %}" class="btn btn-secondary">Voltar</a>
       </div>
     </form>

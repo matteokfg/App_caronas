@@ -14,6 +14,7 @@ urlpatterns = [
     path('cadastro/passageiro', views.cadastro_passageiro, name='cadastro_passageiro'),
     path('cadastro/motorista', views.cadastro_motorista, name='cadastro_motorista'),
     path('cadastro/ser_motorista', views.passageiro_to_motorista, name='cadastro_ser_motorista'),
+    path('cadastro/localizacao', views.adicionar_localizacao, name='adicionar_localizacao'),
 
     path('caronas_disponiveis', views.caronas_disponiveis, name='caronas_disponiveis'),
 
