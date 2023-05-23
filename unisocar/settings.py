@@ -33,7 +33,6 @@ ALLOWED_HOSTS = [
 
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -41,10 +40,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'localflavor',
+    'localflavor',  # necessario para CPFField()
     'app',
-    'crispy_forms',
-    'crispy_bootstrap4',
+    'crispy_forms',  # necessario para a renderizacao dos forms, junto com 'crispy_bootstrap4'
+    'crispy_bootstrap4',  # necessario para a renderizacao dos forms, junto com 'crispy_foms'
     'debug_toolbar',  # https://django-debug-toolbar.readthedocs.io/en/latest/installation.html
 ]
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
