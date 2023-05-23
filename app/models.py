@@ -191,7 +191,7 @@ class Carona(models.Model):
 
     date_inicial_carona = models.DateTimeField(
         default=timezone.now,
-        verbose_name="Data de inicio",
+        verbose_name="Data de início",
         help_text="Data e hora iniciais da carona.",
     )
 

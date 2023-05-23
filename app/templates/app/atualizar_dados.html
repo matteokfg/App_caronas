@@ -15,7 +15,7 @@
 
 {% block content %}
   <div class="container">
-    <img src="{{ profile.motorista.foto_motorista.url }}" alt="">
+    <img src="{{ profile.motorista.foto_motorista.url }}" alt="" style="border-style: ridge;">
     <form method="post" class="form-signin">
         {% csrf_token %}
 

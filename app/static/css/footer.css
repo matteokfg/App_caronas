@@ -1,9 +1,8 @@
 .rodape{
     background-color: #2A3994;
-    position: fixed;
-    bottom: 0px;
     width: 100%;
-    height: 56px;
+    height: 50px;
+    margin-top: 10px;
 }
 
 a.termos{
