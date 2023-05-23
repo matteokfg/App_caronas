@@ -150,6 +150,7 @@ class Carona(models.Model):
     motorista = models.ForeignKey(
         Motorista,
         on_delete=models.PROTECT,
+        related_name="carona",
         verbose_name="Usuario",
         help_text="Coluna com o motorista da carona.",
     )

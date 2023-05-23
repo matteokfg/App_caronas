@@ -7,36 +7,35 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout, get_user_model
 from .forms import UserForm, ProfileForm, MotoristaForm, CaronaForm, LocalizacaoForm, UpdateProfileToMotoristaForm, UpdateUserForm, UpdateProfileForm, UpdateMotoristaForm
 
-#This file defines the view functions for the app. View functions are Python functions that handle HTTP requests and return HTTP responses. 
-#In this file, we define a single view function called 'caronas_disp'. This function takes a request object as its argument and returns a rendered HTML template using the 'render' shortcut function. The rendered template is the 'index.html' template located in the 'app' directory.
-#View functions are an essential part of any Django project, as they define the behavior of our web application's pages. By defining view functions in this file, we can ensure that our app responds correctly to incoming requests and provides a consistent user experience.
 
 def inicio_index(request):
     return render(request, 'app/index.html', {})
+
+
+def cadastro(request):
+    if request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('index'))
+
+    user_form = UserForm(request.POST or None)
+    context = {
+        "user_form": user_form,
+    }
+    if user_form.is_valid():
+        user_object = user_form.save()
+        context['user_form'] = UserForm()
+        login(request, user_object)
+        return HttpResponseRedirect(reverse('cadastro_passageiro'))
+    
+    return render(request, 'app/cadastro_user.html', context=context)
 
 @login_required
 def caronas_disponiveis(request):
     profile = Profile.objects.get(user_id=request.user.id)
 
     caronas = list(Carona.objects.all()) #Carona.objects.all().filter(date_final_carona__lte=timezone.now(), date_inicial_carona__gte=timezone.now()-datetime.timedelta(minutes=30)) <- caronas acontecendo agora e comecadas com 30 minutos antes
-    motoristas = []
-    profiles = []
-    user_s = []
-
-    for carona in caronas:
-        motorista = Motorista.objects.get(id=carona.motorista_id)
-        motoristas.append(motorista)
-    for m in motoristas:
-        profile_s = Profile.objects.get(id=m.profile_id)
-        profiles.append(profile_s)
-    for p in profiles:
-        use_r = User.objects.get(id=p.user_id)
-        user_s.append(use_r)
-
-    data_caronas_motoristas_profiles_users = zip(caronas, motoristas, profiles, user_s)
 
     context = {
-        'data_caronas_motoristas_profiles_users': data_caronas_motoristas_profiles_users,
+        'caronas': caronas,
         'profile': profile,
     }
     return render(request, 'app/caronas_disponiveis.html', context)
@@ -60,23 +59,6 @@ def login_user(request):
 def logout_user(request):
     logout(request)
     return HttpResponseRedirect(reverse('index'))
-
-
-def cadastro(request):
-    if request.user.is_authenticated:
-        return HttpResponseRedirect(reverse('index'))
-
-    user_form = UserForm(request.POST or None)
-    context = {
-        "user_form": user_form,
-    }
-    if user_form.is_valid():
-        user_object = user_form.save()
-        context['user_form'] = UserForm()
-        login(request, user_object)
-        return HttpResponseRedirect(reverse('cadastro_passageiro'))
-    
-    return render(request, 'app/cadastro_user.html', context=context)
 
 @login_required
 def cadastro_passageiro(request):
@@ -160,10 +142,6 @@ def adicionar_carona(request):
         return HttpResponseRedirect(reverse('caronas_disponiveis'))
 
     return render(request, 'app/adicionar_carona.html', context)
-
-@login_required
-def minha_conta(request):
-    return render(request, 'app/minha_conta.html', {})
 
 @login_required
 def atualizar_dados(request):

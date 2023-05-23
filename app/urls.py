@@ -19,7 +19,6 @@ urlpatterns = [
 
     path('adicionar_carona', views.adicionar_carona, name='adicionar_carona'),
 
-    path('minha_conta', views.minha_conta, name='minha_conta'),
-    path('minha_conta/atualizar_dados', views.atualizar_dados, name='atualizar_dados'),
-    path('minha_conta/alterar_senha', views.alterar_senha, name='alterar_senha'),
+    path('atualizar_dados', views.atualizar_dados, name='atualizar_dados'),
+    path('alterar_senha', views.alterar_senha, name='alterar_senha'),
 ]

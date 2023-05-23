@@ -1,14 +1,14 @@
 {% load static %}
 <div class="col-md-4">
   <div class="card mb-4 shadow-sm" style="width: 18rem;">
-      <img class="card-img-top" src="{{ motorista.foto_motorista.url }}" alt="Card image" height="155" style="border: 1px;">
+      <img class="card-img-top" src="{{ carona.motorista.foto_motorista.url }}" alt="Card image" height="155" style="border: 1px;">
       <div class="card-body">
-        <h5 class="card-title">{{ use_r.username }}</h5>
+        <h5 class="card-title">{{ carona.motorista.profile.user.username }}</h5>
         <p class="card-text">Vagas Disponíveis: {{ carona.lotation }}</p>
         <div class="d-flex justify-content-between align-items-center">
           <div class="btn-group" role="group">
-              <button type="button" class="btn btn-sm btn-otline-secondary" data-toggle="modal" data-target="#solicitar">Solicitar</button>
-              <button type="button" class="btn btn-sm btn-otline-secondary" data-toggle="modal" data-target="#detalhes">Detalhes</button>
+              <button type="button" class="btn btn-sm btn-otline-secondary" data-toggle="modal" data-target="#solicitar{{ carona.id }}">Solicitar</button>
+              <button type="button" class="btn btn-sm btn-otline-secondary" data-toggle="modal" data-target="#detalhes{{ carona.id }}">Detalhes</button>
           </div>
           <small class="text-muted">{{ carona.carona_duration }} minutos</small>
         </div>
@@ -17,11 +17,11 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="detalhes" tabindex="-1" role="dialog" aria-labelledby="detalhesModal" aria-hidden="true">
+<div class="modal fade" id="detalhes{{ carona.id }}" tabindex="-1" role="dialog" aria-labelledby="detalhesModal" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="detalhesTitulo">Carona do {{ use_r.username }}</h5>
+          <h5 class="modal-title" id="detalhesTitulo">Carona do {{ carona.motorista.profile.user.username }}</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -38,7 +38,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="solicitar" tabindex="-1" role="dialog" aria-labelledby="solicitarModal" aria-hidden="true">
+<div class="modal fade" id="solicitar{{ carona.id }}" tabindex="-1" role="dialog" aria-labelledby="solicitarModal" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
