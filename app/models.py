@@ -141,9 +141,9 @@ class Localizacao(models.Model):
         help_text="Representa a parte da coordenada: Longitude.",
     )
 
-    def location(self):
+    def __str__(self):
         # metodo retorna coordenadas
-        return f"Localizacao: {self.latitude} {self.longitude}"
+        return f"{self.latitude} e {self.longitude}"
 #<---------------------------------- fim model localizacao-------------------------------->
 #<---------------------------------- model carona ---------------------------------------->
 
