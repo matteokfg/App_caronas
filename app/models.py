@@ -80,32 +80,35 @@ class Motorista(models.Model):
         on_delete=models.PROTECT,
         related_name="motorista",
         verbose_name="ID",
-        help_text="Coluna com o id do usuario que e motorista",
+        help_text="Coluna com o id do usuário, que é o motorista.",
     )
 
     foto_motorista = models.ImageField(
         upload_to="uploads/foto_motorista/",
         blank=True,
         null=True,
+        verbose_name="Sua foto:",
     )
 
     foto_carro = models.ImageField(
         upload_to="uploads/foto_carro/",
         blank=True,
         null=True,
+        verbose_name="Foto do carro da carona:",
     )
 
     foto_cnh = models.ImageField(
         upload_to="uploads/foto_documento_cnh/",
         blank=True,
         null=True,
+        verbose_name="Foto da sua CNH:",
     )
 
     placa = models.CharField(
         default='AAA-0000',
         max_length=8,
         verbose_name="Placa do carro",
-        help_text="Coluna com a placa do carro da carona, sendo padrao: 'XXX-0000'.",
+        help_text="Coluna com a placa do carro da carona, seguindo o padrão: 'XXX-0000'.",
     )
 
     def __str__(self):
