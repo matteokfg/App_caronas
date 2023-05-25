@@ -14,19 +14,11 @@ class ProfileForm(forms.ModelForm):
         model = Profile
         fields = ['user', 'cpf_user', 'relation_with_uniso_user', 'genero_user', 'eh_motorista']
 
-    def clean(self):
-        data = self.cleaned_data
-        pass
-
 
 class MotoristaForm(forms.ModelForm):
     class Meta:
         model = Motorista
         fields = ['profile', 'foto_motorista', 'foto_carro', 'foto_cnh', 'placa']
-
-    def clean(self):
-        data = self.cleaned_data
-        pass
 
 
 class UpdateProfileToMotoristaForm(forms.ModelForm):
@@ -40,19 +32,12 @@ class CaronaForm(forms.ModelForm):
         model = Carona
         fields = ['motorista', 'inicial_location', 'location_final', 'lotation', 'date_inicial_carona', 'date_final_carona']
 
-    def clean(self):
-        data = self.cleaned_data
-        pass
-
 
 class LocalizacaoForm(forms.ModelForm):
     class Meta:
         model = Localizacao
         fields =['latitude', 'longitude']
 
-    def clean(self):
-        data = self.cleaned_data
-        pass
 
 class UpdateUserForm(UserChangeForm):
     class Meta:
@@ -65,16 +50,8 @@ class UpdateProfileForm(forms.ModelForm):
         model = Profile
         fields = ['cpf_user', 'relation_with_uniso_user', 'genero_user', 'eh_motorista']
 
-    def clean(self):
-        data = self.cleaned_data
-        pass
-
 
 class UpdateMotoristaForm(forms.ModelForm):
     class Meta:
         model = Motorista
         fields = ['foto_motorista', 'foto_carro', 'foto_cnh', 'placa']
-
-    def clean(self):
-        data = self.cleaned_data
-        pass

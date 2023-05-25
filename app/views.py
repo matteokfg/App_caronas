@@ -7,7 +7,6 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from .forms import UserForm, ProfileForm, MotoristaForm, CaronaForm, LocalizacaoForm, UpdateProfileToMotoristaForm, UpdateUserForm, UpdateProfileForm, UpdateMotoristaForm
 # alterar senha
-from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 
@@ -90,8 +89,12 @@ def passageiro_to_motorista(request):
     if request.method == 'POST':
         update_profile_to_motorista = UpdateProfileToMotoristaForm(request.POST, instance=profile)
         if update_profile_to_motorista.is_valid():
-            update_profile_to_motorista.save()
-            return HttpResponseRedirect(reverse('cadastro_motorista'))
+            update_profile = update_profile_to_motorista.save(commit=False)
+            quer_ser = update_profile.eh_motorista
+            if quer_ser:
+                update_profile_to_motorista.save()
+                return HttpResponseRedirect(reverse('cadastro_motorista'))
+            return HttpResponseRedirect(reverse('caronas_disponiveis'))
 
     else:
         update_profile_to_motorista = UpdateProfileToMotoristaForm(instance=profile)
@@ -126,15 +129,17 @@ def cadastro_motorista(request):
 
 @login_required
 def adicionar_carona(request):
-    # localizacoes = Localizacao.objects.all()
     profile = Profile.objects.get(user_id= request.user.id)
+
+    if not profile.eh_motorista:
+        return HttpResponseRedirect(reverse('caronas_disponiveis'))
+
     motorista = Motorista.objects.get(profile_id=profile.id)
     carona_form = CaronaForm(request.POST or None)
     context = {
         'carona_form': carona_form,
         'motorista': motorista,
         'profile': profile,
-        # 'localizacoes': localizacoes,
     }
     if carona_form.is_valid():
         carona = carona_form.save(commit=False)
@@ -176,11 +181,12 @@ def atualizar_dados(request):
             profile_form.save()
 
         if motorista_form.is_valid():
+            print("oi")
             motorista_form.save()
+
         if user_form.is_valid() or profile_form.is_valid() or motorista_form.is_valid():
-            messages.success(request, 'Your password was successfully updated!')
             return HttpResponseRedirect(reverse('caronas_disponiveis'))
-        
+
     else:
         user_form = UpdateUserForm(instance=request.user)
         profile_form = UpdateProfileForm(instance=profile)

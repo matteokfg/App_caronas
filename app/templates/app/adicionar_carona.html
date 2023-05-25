@@ -23,7 +23,11 @@
     <h2 class="text-dark">ADICIONAR CARONA</h2>
     <br>
     <div class="thumbnail-container">
-      <img src="{{ motorista.foto_motorista.url }}" alt="Foto de perfil" class="img-thumbnail thumbnail-image"/>
+      {% if motorista.foto_motorista.url != null %}
+        <img src="{{ motorista.foto_motorista.url }}" alt="Foto de perfil" class="img-thumbnail thumbnail-image"/>
+      {% else %}
+        <img src="{% static 'img/foto_em_branco.png' %}" alt="Foto de perfil" class="img-thumbnail thumbnail-image"/>
+      {% endif %}
     </div>
     <a href="{% url 'adicionar_localizacao' %}" class="btn btn-secondary" style="position: absolute; right: 310px; top: 300px">Adicionar localização</a>
     <form method="post">

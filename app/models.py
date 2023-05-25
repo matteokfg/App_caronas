@@ -8,6 +8,7 @@ from django.dispatch import receiver
 # field do cpf no banco de dados no django
 from localflavor.br.models import BRCPFField
 # modificador de nome da imagem
+from app.helpers import RandomFileName
 import uuid
 import os
 
