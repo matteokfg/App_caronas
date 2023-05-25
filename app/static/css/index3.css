@@ -93,20 +93,3 @@ body {
 .bg-color {
   background-color: #2A3994;
 }
-
-.jumbotron-fluid {
-  background-color: #2A3994;
-  color: #fff;
-}
-
-.dropdown-item:hover {
-  background-color: transparent;
-  color: #fff;
-}
-
-.custom-dropdown-menu {
-  position: absolute;
-  right: 0;
-  left: auto;
-  min-width: 10rem;
-}
