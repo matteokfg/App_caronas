@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block titulo %}
-  <title>Unisocar</title>
+  <title>UnisoCar</title>
 {% endblock %}
 
 {% block estilo %}
@@ -10,16 +10,34 @@
 {% endblock %}
 
 {% block navbar %}
-  {% include "app/includes/navbar.html" with profile=profile %}
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-color">
+  <a class="navbar-brand" href="{% url 'index' %}">UnisoCar</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="collapsibleNavbar">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link font-weight-bold" href="{% url 'login' %}">Login</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link font-weight-bold" href="{% url 'cadastro' %}">Cadastre-se</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+{% endblock %}
+
+{% block jumbotron_index %}
+<div class="jumbotron jumbotron-fluid">
+  <div class="container">
+    <h1 class="display-4">Seja bem-vindo ao UnisoCar!</h1><br>
+    <p class="lead">Encontre ou ofereça <b>caronas solidárias.</b></p>
+  </div>
+</div>
 {% endblock %}
 
 {% block content %}
-  <div class="jumbotron jumbotron-fluid">
-    <div class="container">
-      <h1 class="display-4">Seja bem-vindo ao Unisocar!</h1><br>
-      <p class="lead">Encontre ou ofereça <b>caronas solidárias.</b></p>
-    </div>
-  </div>
   <!-- Mensagens de marketing
       ================================================== -->
   <!-- Envolve o resto da página em outro container, para centralizar todo o conteúdo. -->
@@ -29,7 +47,7 @@
     <div class="row featurette">
       <div class="col-md-7">
         <h2 class="featurette-heading">Encontre ou ofereça caronas solidárias. Supreendente, não?!</h2>
-        <p class="lead">O Unisocar tem como objetivo facilitar o dia a dia de alunos e funcionários da Universidade! </p>
+        <p class="lead">O UnisoCar tem como objetivo facilitar o dia a dia de alunos e funcionários da Universidade! </p>
       </div>
       <div class="col-md-5">
         <img class="featurette-image img-fluid mx-auto" data-src="holder.js/500x500/auto" alt="500x500"
