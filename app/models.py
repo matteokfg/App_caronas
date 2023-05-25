@@ -7,7 +7,25 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 # field do cpf no banco de dados no django
 from localflavor.br.models import BRCPFField
-# arquivo que contem as tabelas do banco em modo orientacao a objetos do python/django
+# modificador de nome da imagem
+import uuid
+import os
+
+def path_imagem_motorista(instance, filename):
+    ext = filename.split('.')[-1]
+    filename = "%s.%s" % (uuid.uuid4(), ext)
+    return os.path.join("uploads/foto_motorista/", filename)
+
+def path_imagem_carro(instance, filename):
+    ext = filename.split('.')[-1]
+    filename = "%s.%s" % (uuid.uuid4(), ext)
+    return os.path.join("uploads/foto_carro/", filename)
+
+def path_imagem_cnh(instance, filename):
+    ext = filename.split('.')[-1]
+    filename = "%s.%s" % (uuid.uuid4(), ext)
+    return os.path.join("uploads/foto_documento_cnh/", filename)
+
 
 #<---------------------------------- model user ------------------------------------------>
 
@@ -84,21 +102,21 @@ class Motorista(models.Model):
     )
 
     foto_motorista = models.ImageField(
-        upload_to="uploads/foto_motorista/",
+        upload_to=path_imagem_motorista,
         blank=True,
         null=True,
         verbose_name="Sua foto:",
     )
 
     foto_carro = models.ImageField(
-        upload_to="uploads/foto_carro/",
+        upload_to=path_imagem_carro,
         blank=True,
         null=True,
         verbose_name="Foto do carro da carona:",
     )
 
     foto_cnh = models.ImageField(
-        upload_to="uploads/foto_documento_cnh/",
+        upload_to=path_imagem_cnh,
         blank=True,
         null=True,
         verbose_name="Foto da sua CNH:",
