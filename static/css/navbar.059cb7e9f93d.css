@@ -1,0 +1,17 @@
+.bg-color {
+    background-color: #2A3994;
+    /* position: absolute;
+    top: 0px; */
+  }
+
+.dropdown-item:hover {
+    background-color: transparent;
+    color: #fff;
+  }
+
+.custom-dropdown-menu {
+    position: absolute;
+    right: 0;
+    left: auto;
+    min-width: 10rem;
+}

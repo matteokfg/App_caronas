@@ -15,6 +15,9 @@
 
 {% block content %}
   <div class="container">
+    {% if profile.eh_motorista %}
+      <img src="{{ profile.motorista.foto_motorista.url }}" alt="" style="border-style: ridge;">
+    {% endif %}
     <form method="post" class="form-signin">
         {% csrf_token %}
 
@@ -25,7 +28,7 @@
         {% endif %}
 
         <button class="btn btn-lg btn-warning" type="submit">Atualizar</button>
-        <a class="btn btn-lg btn-danger" href="{% url 'minha_conta' %}">Voltar</a>
+        <a class="btn btn-lg btn-danger" href="{% url 'caronas_disponiveis' %}">Voltar</a>
     </form>
   </div>
 {% endblock %}

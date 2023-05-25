@@ -3,7 +3,7 @@
 
 
 {% block titulo %}
-  <title>Unisocar - Caronas</title>
+  <title>UnisoCar - Caronas</title>
 {% endblock %}
 
 
@@ -22,8 +22,8 @@
   <div class="album py-5 bg-light">
     <div class="container">
       <div class="row"> 
-          {% for carona, motorista, profile, use_r in data_caronas_motoristas_profiles_users %}
-            {% include "app/includes/carona_card.html" with carona=carona motorista=motorista profile=profile use_r=use_r %}
+          {% for carona in caronas %}
+            {% include "app/includes/carona_card.html" with carona=carona %}
           {% endfor %}
       </div>
     </div>

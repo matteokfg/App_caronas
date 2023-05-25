@@ -17,6 +17,7 @@ class Profile(models.Model):
     user = models.OneToOneField(
         User, 
         on_delete=models.PROTECT,
+        related_name="profile",
         verbose_name="Usuário",
         help_text="Chave estrangeira conectando o usuário do django ao perfil do usuário.",
     )
@@ -77,30 +78,37 @@ class Motorista(models.Model):
     profile = models.OneToOneField(
         Profile,
         on_delete=models.PROTECT,
+        related_name="motorista",
         verbose_name="ID",
-        help_text="Coluna com o id do usuario que e motorista",
+        help_text="Coluna com o id do usuário, que é o motorista.",
     )
 
-    foto_motorista = models.FileField(
-        upload_to="uploads/motorista/",
-        default="uploads/foto_em_branco.png",
+    foto_motorista = models.ImageField(
+        upload_to="uploads/foto_motorista/",
+        blank=True,
+        null=True,
+        verbose_name="Sua foto:",
     )
 
-    foto_carro = models.FileField(
-        upload_to="uploads/carro/",
-        default="uploads/foto_em_branco.png",
+    foto_carro = models.ImageField(
+        upload_to="uploads/foto_carro/",
+        blank=True,
+        null=True,
+        verbose_name="Foto do carro da carona:",
     )
 
-    foto_cnh = models.FileField(
-        upload_to="uploads/documento_cnh/",
-        default="uploads/foto_em_branco.png",
+    foto_cnh = models.ImageField(
+        upload_to="uploads/foto_documento_cnh/",
+        blank=True,
+        null=True,
+        verbose_name="Foto da sua CNH:",
     )
 
     placa = models.CharField(
         default='AAA-0000',
         max_length=8,
         verbose_name="Placa do carro",
-        help_text="Coluna com a placa do carro da carona, sendo padrao: 'XXX-0000'.",
+        help_text="Coluna com a placa do carro da carona, seguindo o padrão: 'XXX-0000'.",
     )
 
     def __str__(self):
@@ -123,19 +131,19 @@ class Localizacao(models.Model):
         max_digits=11,
         decimal_places=7,
         verbose_name="Latitude",
-        help_text="Representa a parte da coordenada, Latitude (em float), retornada pela API",
+        help_text="Representa a parte da coordenada: Latitude.",
     )
 
     longitude = models.DecimalField(
         max_digits=11,
         decimal_places=7,
         verbose_name="Longitude",
-        help_text="Representa a parte da coordenada, Longitude (em float), retornada pela API",
+        help_text="Representa a parte da coordenada: Longitude.",
     )
 
-    def location(self):
+    def __str__(self):
         # metodo retorna coordenadas
-        return f"Localizacao: {self.latitude} {self.longitude}"
+        return f"{self.latitude} e {self.longitude}"
 #<---------------------------------- fim model localizacao-------------------------------->
 #<---------------------------------- model carona ---------------------------------------->
 
@@ -145,6 +153,7 @@ class Carona(models.Model):
     motorista = models.ForeignKey(
         Motorista,
         on_delete=models.PROTECT,
+        related_name="carona",
         verbose_name="Usuario",
         help_text="Coluna com o motorista da carona.",
     )
@@ -186,7 +195,7 @@ class Carona(models.Model):
 
     date_inicial_carona = models.DateTimeField(
         default=timezone.now,
-        verbose_name="Data de inicio",
+        verbose_name="Data de início",
         help_text="Data e hora iniciais da carona.",
     )
 

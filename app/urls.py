@@ -14,12 +14,12 @@ urlpatterns = [
     path('cadastro/passageiro', views.cadastro_passageiro, name='cadastro_passageiro'),
     path('cadastro/motorista', views.cadastro_motorista, name='cadastro_motorista'),
     path('cadastro/ser_motorista', views.passageiro_to_motorista, name='cadastro_ser_motorista'),
+    path('cadastro/localizacao', views.adicionar_localizacao, name='adicionar_localizacao'),
 
     path('caronas_disponiveis', views.caronas_disponiveis, name='caronas_disponiveis'),
 
     path('adicionar_carona', views.adicionar_carona, name='adicionar_carona'),
 
-    path('minha_conta', views.minha_conta, name='minha_conta'),
-    path('minha_conta/atualizar_dados', views.atualizar_dados, name='atualizar_dados'),
-    path('minha_conta/alterar_senha', views.alterar_senha, name='alterar_senha'),
+    path('atualizar_dados', views.atualizar_dados, name='atualizar_dados'),
+    path('alterar_senha', views.alterar_senha, name='alterar_senha'),
 ]
