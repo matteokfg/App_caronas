@@ -1,22 +1,30 @@
 {% extends 'base.html' %}
 {% load static %}
 
+
 {% block titulo %}
-  <title>Unisocar - Caronas</title>
+  <title>UnisoCar - Caronas</title>
 {% endblock %}
+
 
 {% block estilo %}
   <link rel="stylesheet" href="{% static 'css/caronas_disponiveis_style.css' %}"/>
 {% endblock %}
 
+
+{% block navbar %}
+  {% include "app/includes/navbar.html" with profile=profile %}
+{% endblock %}
+
+
 {% block content %}
   <h1 class="text-center my-5">Caronas Disponíveis</h1>
   <div class="album py-5 bg-light">
     <div class="container">
-      <div class="row"> <!--row-cols-1 row-cols-sm-2 row-cols-md-3 g-3-->
-        {% for carona, motorista in caronas_e_motoristas %}
-          {% include "app/includes/carona_card.html" with carona=carona motorista=motorista %}
-        {% endfor %}
+      <div class="row"> 
+          {% for carona in caronas %}
+            {% include "app/includes/carona_card.html" with carona=carona %}
+          {% endfor %}
       </div>
     </div>
   </div>

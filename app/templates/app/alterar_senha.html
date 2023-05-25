@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block titulo %}
+    <title>Alterar senha</title>
+{% endblock %}
+
+{% block navbar %}
+  {% include "app/includes/navbar.html" with profile=profile %}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="container">
+        <h1 class="h3 mb-3 text-dark">Alterar senha</h1>
+    </div>
+    <form class="form-signin" method="post">
+        {% csrf_token %}
+
+        {{ form_alterar_senha|crispy }}
+
+        <button class="btn btn-lg btn-danger" type="submit">Alterar</button>
+        <a class="btn btn-lg btn-warning" href="{% url 'caronas_disponiveis' %}">Voltar</a>
+    </form>
+</div>
+{% endblock %}
