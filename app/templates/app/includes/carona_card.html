@@ -1,7 +1,7 @@
 {% load static %}
 <div class="col-md-4">
   <div class="card mb-4 shadow-sm" style="width: 18rem;">
-      {% if carona.motorista.foto_motorista.url != null %}
+      {% if carona.motorista.foto_motorista %}
         <img class="card-img-top" src="{{ carona.motorista.foto_motorista.url }}" alt="Card image" height="155" style="border: 1px;">
       {% else %}
         <img class="card-img-top" src="{% static 'img/foto_em_branco.png' %}" alt="Card image" height="155" style="border: 1px;">

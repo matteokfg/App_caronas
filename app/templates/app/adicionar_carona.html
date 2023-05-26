@@ -23,7 +23,7 @@
     <h2 class="text-dark">ADICIONAR CARONA</h2>
     <br>
     <div class="thumbnail-container">
-      {% if motorista.foto_motorista.url != null %}
+      {% if motorista.foto_motorista %}
         <img src="{{ motorista.foto_motorista.url }}" alt="Foto de perfil" class="img-thumbnail thumbnail-image"/>
       {% else %}
         <img src="{% static 'img/foto_em_branco.png' %}" alt="Foto de perfil" class="img-thumbnail thumbnail-image"/>
