@@ -1,3 +1,4 @@
+from typing import Any
 from django.db import models
 from django.conf import settings
 from django.utils import timezone
@@ -8,23 +9,26 @@ from django.dispatch import receiver
 # field do cpf no banco de dados no django
 from localflavor.br.models import BRCPFField
 # modificador de nome da imagem
+from django.utils.deconstruct import deconstructible
 import uuid
 import os
+# modificador de tamanho da imagem
+from PIL import Image
 
-def path_imagem_motorista(instance, filename):
-    ext = filename.split('.')[-1]
-    filename = "%s.%s" % (uuid.uuid4(), ext)
-    return os.path.join("uploads/foto_motorista/", filename)
+@deconstructible
+class DynamicUploadTo():
+    def __init__(self, upload_to):
+        self.upload_to = upload_to
 
-def path_imagem_carro(instance, filename):
-    ext = filename.split('.')[-1]
-    filename = "%s.%s" % (uuid.uuid4(), ext)
-    return os.path.join("uploads/foto_carro/", filename)
+    def __call__(self, instance, filename):
+        generated_uuid = uuid.uuid4()
+        extension = filename.split('.')[-1]
+        new_filename = f"{generated_uuid}.{extension}"
+        return os.path.join(self.upload_to, new_filename)
 
-def path_imagem_cnh(instance, filename):
-    ext = filename.split('.')[-1]
-    filename = "%s.%s" % (uuid.uuid4(), ext)
-    return os.path.join("uploads/foto_documento_cnh/", filename)
+Motorista_foto_motorista_upload_to = DynamicUploadTo("uploads/foto_motorista/")
+Motorista_foto_carro_upload_to = DynamicUploadTo("uploads/foto_carro/")
+Motorista_foto_cnh_upload_to = DynamicUploadTo("uploads/foto_documento_cnh/")
 
 
 #<---------------------------------- model user ------------------------------------------>
@@ -34,7 +38,7 @@ class Profile(models.Model):
     # faz a relacao de um para um entre o model inicial do django de usuarios com esse que adiciona mais campos relacionados ao usuario
     user = models.OneToOneField(
         User, 
-        on_delete=models.PROTECT,
+        on_delete=models.CASCADE,
         related_name="profile",
         verbose_name="Usuário",
         help_text="Chave estrangeira conectando o usuário do django ao perfil do usuário.",
@@ -95,28 +99,28 @@ class Motorista(models.Model):
 
     profile = models.OneToOneField(
         Profile,
-        on_delete=models.PROTECT,
+        on_delete=models.CASCADE,
         related_name="motorista",
         verbose_name="ID",
         help_text="Coluna com o id do usuário, que é o motorista.",
     )
 
     foto_motorista = models.ImageField(
-        upload_to=path_imagem_motorista,
+        upload_to=Motorista_foto_motorista_upload_to,
         blank=True,
         null=True,
         verbose_name="Sua foto:",
     )
 
     foto_carro = models.ImageField(
-        upload_to=path_imagem_carro,
+        upload_to=Motorista_foto_carro_upload_to,
         blank=True,
         null=True,
         verbose_name="Foto do carro da carona:",
     )
 
     foto_cnh = models.ImageField(
-        upload_to=path_imagem_cnh,
+        upload_to=Motorista_foto_cnh_upload_to,
         blank=True,
         null=True,
         verbose_name="Foto da sua CNH:",
@@ -137,9 +141,49 @@ def create_user_motorista(sender, instance, created, **kwargs):
     if created:
         Motorista.objects.create(profile=instance)
 # lugar aonde vi essas funcoes: https://simpleisbetterthancomplex.com/tutorial/2016/07/22/how-to-extend-django-user-model.html#onetoone
-@receiver(post_save, sender=Profile)
-def save_user_motorista(sender, instance, **kwargs):
-    instance.motorista.save()
+# @receiver(post_save, sender=Profile)
+# def save_user_motorista(sender, instance, **kwargs):
+#     instance.motorista.save()
+
+# Signal to handle image resizing it is called after the image was renamed and
+# saved to the disk. Then it OVERRIDES it with a smaller version.
+# Reference https://stackoverflow.com/a/56110972 (only inspiration, had to modify a little bit)
+@receiver(post_save, sender=Motorista)
+def resize_images(sender, instance, **kwargs):
+    MAX_WIDTH = settings.MAX_WIDTH
+    MAX_HEIGHT = settings.MAX_HEIGHT
+    MAX_SIZE = settings.MAX_SIZE
+    # for field in fields_to_resize:
+
+
+    # We check if the locally saved image fits any criteria for resizing. Its sizing comes from the 
+    # database, to it is an inexpensive operation (it was populated when the model was saved)
+    if instance.foto_motorista and any([
+        instance.foto_motorista.width > MAX_WIDTH, # must be resized if too wide
+        instance.foto_motorista.height > MAX_HEIGHT, # must resize if too tall
+    ]):
+        img = Image.open(instance.foto_motorista.path)
+        img.thumbnail(MAX_SIZE)
+        img.save(instance.foto_motorista.path)
+        img.close()
+    if instance.foto_carro and any([
+        instance.foto_carro.width > MAX_WIDTH, # must be resized if too wide
+        instance.foto_carro.height > MAX_HEIGHT, # must resize if too tall
+    ]):
+        img = Image.open(instance.foto_carro.path)
+        img.thumbnail(MAX_SIZE)
+        img.save(instance.foto_carro.path)
+        img.close()
+    if instance.foto_cnh and any([
+        instance.foto_cnh.width > MAX_WIDTH, # must be resized if too wide
+        instance.foto_cnh.height > MAX_HEIGHT, # must resize if too tall
+    ]):
+        img = Image.open(instance.foto_cnh.path)
+        img.thumbnail(MAX_SIZE)
+        img.save(instance.foto_cnh.path)
+        img.close()
+
+
 #<---------------------------------- fim model motorista --------------------------------->
 #<---------------------------------- inicio model localizacao----------------------------->
 class Localizacao(models.Model):

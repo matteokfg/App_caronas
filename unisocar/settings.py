@@ -45,6 +45,9 @@ INSTALLED_APPS = [
     'crispy_forms',  # necessario para a renderizacao dos forms, junto com 'crispy_bootstrap4'
     'crispy_bootstrap4',  # necessario para a renderizacao dos forms, junto com 'crispy_foms'
     'debug_toolbar',  # https://django-debug-toolbar.readthedocs.io/en/latest/installation.html
+    
+    #sempre ser o ultimo
+    'django_cleanup.apps.CleanupConfig',  # https://github.com/un1t/django-cleanup
 ]
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
 
@@ -141,13 +144,18 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = BASE_DIR / 'static'
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Media files (images)
 # https://testdriven.io/blog/django-static-files/
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+# tamanho das imagens salvas no BD
+MAX_WIDTH = 200
+MAX_HEIGHT = 200
+MAX_SIZE = (200, 200)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

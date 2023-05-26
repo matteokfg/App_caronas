@@ -30,18 +30,6 @@ def cadastro(request):
     
     return render(request, 'app/cadastro_user.html', context=context)
 
-@login_required
-def caronas_disponiveis(request):
-    profile = Profile.objects.get(user_id=request.user.id)
-
-    caronas = list(Carona.objects.all()) #Carona.objects.all().filter(date_final_carona__lte=timezone.now(), date_inicial_carona__gte=timezone.now()-datetime.timedelta(minutes=30)) <- caronas acontecendo agora e comecadas com 30 minutos antes
-
-    context = {
-        'caronas': caronas,
-        'profile': profile,
-    }
-    return render(request, 'app/caronas_disponiveis.html', context)
-
 
 def login_user(request):
     if request.user.is_authenticated:
@@ -56,6 +44,18 @@ def login_user(request):
             return HttpResponseRedirect(reverse('caronas_disponiveis'))
 
     return render(request, 'app/login.html', {})
+
+@login_required
+def caronas_disponiveis(request):
+    profile = Profile.objects.get(user_id=request.user.id)
+
+    caronas = list(Carona.objects.all()) #Carona.objects.all().filter(date_final_carona__lte=timezone.now(), date_inicial_carona__gte=timezone.now()-datetime.timedelta(minutes=30)) <- caronas acontecendo agora e comecadas com 30 minutos antes
+
+    context = {
+        'caronas': caronas,
+        'profile': profile,
+    }
+    return render(request, 'app/caronas_disponiveis.html', context)
 
 @login_required
 def logout_user(request):
@@ -172,7 +172,7 @@ def atualizar_dados(request):
     if request.method == 'POST':
         user_form = UpdateUserForm(request.POST, instance=request.user)
         profile_form = UpdateProfileForm(request.POST, instance=profile)
-        motorista_form = UpdateMotoristaForm(request.POST, instance=motorista)
+        motorista_form = UpdateMotoristaForm(request.POST, request.FILES, instance=motorista)
 
         if user_form.is_valid():
             user_form.save()
