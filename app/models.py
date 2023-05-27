@@ -141,47 +141,40 @@ def create_user_motorista(sender, instance, created, **kwargs):
     if created:
         Motorista.objects.create(profile=instance)
 # lugar aonde vi essas funcoes: https://simpleisbetterthancomplex.com/tutorial/2016/07/22/how-to-extend-django-user-model.html#onetoone
-# @receiver(post_save, sender=Profile)
-# def save_user_motorista(sender, instance, **kwargs):
-#     instance.motorista.save()
 
-# Signal to handle image resizing it is called after the image was renamed and
-# saved to the disk. Then it OVERRIDES it with a smaller version.
-# Reference https://stackoverflow.com/a/56110972 (only inspiration, had to modify a little bit)
+
+# Referencia https://stackoverflow.com/a/56110972
 @receiver(post_save, sender=Motorista)
-def resize_images(sender, instance, **kwargs):
-    MAX_WIDTH = settings.MAX_WIDTH
-    MAX_HEIGHT = settings.MAX_HEIGHT
-    MAX_SIZE = settings.MAX_SIZE
-    # for field in fields_to_resize:
+def resize_images(sender, instance, **kwargs):                                          # funcao para redimensionar os campos de imagem, depois de salvos no BD e no disco
+    fields_to_resize = {                                                                # dicionario contendo os tres campos de imagefield, de Motorista, e cada um tem seu valor a ser redimensionado
+        'foto_motorista': {
+            'max_width': 200,
+            'max_height': 200,
+        },
+        'foto_carro': {
+            'max_width': 400,
+            'max_height': 400,
+        },
+        'foto_cnh': {
+            'max_width': 400,
+            'max_height': 400,
+        },
+    }
 
+    for fieldname, image_sizes in fields_to_resize.items():                             # loop for para cada item do dicionario a cima
+        imagefield = getattr(instance, fieldname)                                       # acessando o campo pela string fieldname
 
-    # We check if the locally saved image fits any criteria for resizing. Its sizing comes from the 
-    # database, to it is an inexpensive operation (it was populated when the model was saved)
-    if instance.foto_motorista and any([
-        instance.foto_motorista.width > MAX_WIDTH, # must be resized if too wide
-        instance.foto_motorista.height > MAX_HEIGHT, # must resize if too tall
-    ]):
-        img = Image.open(instance.foto_motorista.path)
-        img.thumbnail(MAX_SIZE)
-        img.save(instance.foto_motorista.path)
-        img.close()
-    if instance.foto_carro and any([
-        instance.foto_carro.width > MAX_WIDTH, # must be resized if too wide
-        instance.foto_carro.height > MAX_HEIGHT, # must resize if too tall
-    ]):
-        img = Image.open(instance.foto_carro.path)
-        img.thumbnail(MAX_SIZE)
-        img.save(instance.foto_carro.path)
-        img.close()
-    if instance.foto_cnh and any([
-        instance.foto_cnh.width > MAX_WIDTH, # must be resized if too wide
-        instance.foto_cnh.height > MAX_HEIGHT, # must resize if too tall
-    ]):
-        img = Image.open(instance.foto_cnh.path)
-        img.thumbnail(MAX_SIZE)
-        img.save(instance.foto_cnh.path)
-        img.close()
+        if not isinstance(imagefield, models.ImageField):                               # verifica se o campo é um imagefield
+            break
+
+        image_max_width = image_sizes.get('max_width', settings.MAX_WIDTH)              # tenta pegar o valor do dicionario, senao conseguir, pegar o valor das settings
+        image_max_height = image_sizes.get('max_height', settings.MAX_HEIGHT)           # tenta pegar o valor do dicionario, senao conseguir, pegar o valor das settings
+
+        if imagefield and ((imagefield.width > image_max_width) or (imagefield.height > image_max_height)):  # verifica se o campo nao eh nulo, e se ultrapassa algum limite
+            img = Image.open(imagefield.path)
+            img.thumbnail((image_max_width, image_max_height))                          # redimenciona a imagem
+            img.save(imagefield.path, quality=95)                                       # salva, com a qualidade em 95%
+            img.close()                                                                 # fecha o objeto
 
 
 #<---------------------------------- fim model motorista --------------------------------->

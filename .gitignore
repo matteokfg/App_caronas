@@ -2,7 +2,6 @@
 # Ignora venv local
 venv/
 mysqlclient-1.4.6-cp38-cp38-win32.whl
-static/upload/motorista/*
-!static/upload/motorista/.gitkeep
-static/upload/carro/*
-!static/upload/carro/.gitkeep
+media/uploads/foto_carro
+media/uploads/foto_motorista
+media/uploads/foto_documento_cnh
