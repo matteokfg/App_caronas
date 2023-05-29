@@ -16,9 +16,13 @@
 {% block content %}
   <div class="container">
     {% if profile.eh_motorista %}
-      <img src="{{ profile.motorista.foto_motorista.url }}" alt="" style="border-style: ridge;">
+      {% if profile.motorista.foto_motorista %}
+        <img src="{{ profile.motorista.foto_motorista.url }}" alt="" style="border-style: ridge;">
+      {% else %}
+        <img src="{% static 'img/foto_em_branco.png' %}" alt="" style="border-style: ridge;">
+      {% endif %}
     {% endif %}
-    <form method="post" class="form-signin">
+    <form method="post" enctype="multipart/form-data" class="form-signin">
         {% csrf_token %}
 
         {{ user_form|crispy }}
@@ -31,11 +35,4 @@
         <a class="btn btn-lg btn-danger" href="{% url 'caronas_disponiveis' %}">Voltar</a>
     </form>
   </div>
-{% endblock %}
-
-
-{% block javascript %}
-<script>
-  
-</script>
 {% endblock %}

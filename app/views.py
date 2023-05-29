@@ -7,7 +7,6 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from .forms import UserForm, ProfileForm, MotoristaForm, CaronaForm, LocalizacaoForm, UpdateProfileToMotoristaForm, UpdateUserForm, UpdateProfileForm, UpdateMotoristaForm
 # alterar senha
-from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 
@@ -31,18 +30,6 @@ def cadastro(request):
     
     return render(request, 'app/cadastro_user.html', context=context)
 
-@login_required
-def caronas_disponiveis(request):
-    profile = Profile.objects.get(user_id=request.user.id)
-
-    caronas = list(Carona.objects.all()) #Carona.objects.all().filter(date_final_carona__lte=timezone.now(), date_inicial_carona__gte=timezone.now()-datetime.timedelta(minutes=30)) <- caronas acontecendo agora e comecadas com 30 minutos antes
-
-    context = {
-        'caronas': caronas,
-        'profile': profile,
-    }
-    return render(request, 'app/caronas_disponiveis.html', context)
-
 
 def login_user(request):
     if request.user.is_authenticated:
@@ -57,6 +44,18 @@ def login_user(request):
             return HttpResponseRedirect(reverse('caronas_disponiveis'))
 
     return render(request, 'app/login.html', {})
+
+@login_required
+def caronas_disponiveis(request):
+    profile = Profile.objects.get(user_id=request.user.id)
+
+    caronas = list(Carona.objects.all()) #Carona.objects.all().filter(date_final_carona__lte=timezone.now(), date_inicial_carona__gte=timezone.now()-datetime.timedelta(minutes=30)) <- caronas acontecendo agora e comecadas com 30 minutos antes
+
+    context = {
+        'caronas': caronas,
+        'profile': profile,
+    }
+    return render(request, 'app/caronas_disponiveis.html', context)
 
 @login_required
 def logout_user(request):
@@ -90,8 +89,12 @@ def passageiro_to_motorista(request):
     if request.method == 'POST':
         update_profile_to_motorista = UpdateProfileToMotoristaForm(request.POST, instance=profile)
         if update_profile_to_motorista.is_valid():
-            update_profile_to_motorista.save()
-            return HttpResponseRedirect(reverse('cadastro_motorista'))
+            update_profile = update_profile_to_motorista.save(commit=False)
+            quer_ser = update_profile.eh_motorista
+            if quer_ser:
+                update_profile_to_motorista.save()
+                return HttpResponseRedirect(reverse('cadastro_motorista'))
+            return HttpResponseRedirect(reverse('caronas_disponiveis'))
 
     else:
         update_profile_to_motorista = UpdateProfileToMotoristaForm(instance=profile)
@@ -108,8 +111,11 @@ def cadastro_motorista(request):
     profile = Profile.objects.get(user_id=request.user.id)
     motorista = Motorista.objects.get(profile_id=profile.id)
 
+    if motorista.foto_motorista:
+        return HttpResponseRedirect(reverse('caronas_disponiveis'))
+
     if request.method == 'POST':
-        motorista_form = MotoristaForm(request.POST, instance=motorista)
+        motorista_form = MotoristaForm(request.POST, request.FILES,  instance=motorista)
 
         if motorista_form.is_valid():
             motorista_form.save()
@@ -126,15 +132,18 @@ def cadastro_motorista(request):
 
 @login_required
 def adicionar_carona(request):
-    # localizacoes = Localizacao.objects.all()
     profile = Profile.objects.get(user_id= request.user.id)
+    motorista = Motorista.objects.get(profile_id=profile.id)
+
+    if not (bool(motorista.foto_motorista) != False):
+        return HttpResponseRedirect(reverse('caronas_disponiveis'))
+
     motorista = Motorista.objects.get(profile_id=profile.id)
     carona_form = CaronaForm(request.POST or None)
     context = {
         'carona_form': carona_form,
         'motorista': motorista,
         'profile': profile,
-        # 'localizacoes': localizacoes,
     }
     if carona_form.is_valid():
         carona = carona_form.save(commit=False)
@@ -148,6 +157,12 @@ def adicionar_carona(request):
 
 @login_required
 def adicionar_localizacao(request):
+    profile = Profile.objects.get(user_id= request.user.id)
+    motorista = Motorista.objects.get(profile_id=profile.id)
+
+    if not (bool(motorista.foto_motorista) != False):
+        return HttpResponseRedirect(reverse('caronas_disponiveis'))
+
     if request.method == 'POST':
         locali_form = LocalizacaoForm(request.POST)
 
@@ -157,7 +172,11 @@ def adicionar_localizacao(request):
     else:
         locali_form = LocalizacaoForm()
 
-    return render(request, 'app/adicionar_localizacao.html', {'locali_form': locali_form})
+    context = {
+        'locali_form': locali_form,
+        'profile': profile,
+    }
+    return render(request, 'app/adicionar_localizacao.html', context)
 
 @login_required
 def atualizar_dados(request):
@@ -167,7 +186,7 @@ def atualizar_dados(request):
     if request.method == 'POST':
         user_form = UpdateUserForm(request.POST, instance=request.user)
         profile_form = UpdateProfileForm(request.POST, instance=profile)
-        motorista_form = UpdateMotoristaForm(request.POST, instance=motorista)
+        motorista_form = UpdateMotoristaForm(request.POST, request.FILES, instance=motorista)
 
         if user_form.is_valid():
             user_form.save()
@@ -177,10 +196,10 @@ def atualizar_dados(request):
 
         if motorista_form.is_valid():
             motorista_form.save()
+
         if user_form.is_valid() or profile_form.is_valid() or motorista_form.is_valid():
-            messages.success(request, 'Your password was successfully updated!')
             return HttpResponseRedirect(reverse('caronas_disponiveis'))
-        
+
     else:
         user_form = UpdateUserForm(instance=request.user)
         profile_form = UpdateProfileForm(instance=profile)
