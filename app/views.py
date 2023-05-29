@@ -158,6 +158,11 @@ def adicionar_carona(request):
 @login_required
 def adicionar_localizacao(request):
     profile = Profile.objects.get(user_id= request.user.id)
+    motorista = Motorista.objects.get(profile_id=profile.id)
+
+    if not (motorista.foto_motorista):
+        return HttpResponseRedirect(reverse('caronas_disponiveis'))
+
     if request.method == 'POST':
         locali_form = LocalizacaoForm(request.POST)
 
