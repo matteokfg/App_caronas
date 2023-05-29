@@ -115,7 +115,7 @@ def cadastro_motorista(request):
         return HttpResponseRedirect(reverse('caronas_disponiveis'))
 
     if request.method == 'POST':
-        motorista_form = MotoristaForm(request.POST, instance=motorista)
+        motorista_form = MotoristaForm(request.POST, request.FILES,  instance=motorista)
 
         if motorista_form.is_valid():
             motorista_form.save()
@@ -133,8 +133,9 @@ def cadastro_motorista(request):
 @login_required
 def adicionar_carona(request):
     profile = Profile.objects.get(user_id= request.user.id)
+    motorista = Motorista.objects.get(profile_id=profile.id)
 
-    if not profile.eh_motorista:
+    if not (motorista.foto_motorista):
         return HttpResponseRedirect(reverse('caronas_disponiveis'))
 
     motorista = Motorista.objects.get(profile_id=profile.id)
@@ -189,7 +190,6 @@ def atualizar_dados(request):
             profile_form.save()
 
         if motorista_form.is_valid():
-            print("oi")
             motorista_form.save()
 
         if user_form.is_valid() or profile_form.is_valid() or motorista_form.is_valid():
