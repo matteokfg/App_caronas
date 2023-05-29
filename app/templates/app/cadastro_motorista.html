@@ -23,7 +23,7 @@
     <div class="container">
         <h1 class="h3 mb-3 text-dark">Cadastre-se como Motorista!</h1>
     </div>
-    <form class="form-signin" method="post">
+    <form class="form-signin" method="post" enctype="multipart/form-data">
         {% csrf_token %}
 
         {{ motorista_form|crispy }}
