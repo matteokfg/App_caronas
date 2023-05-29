@@ -1,0 +1,5 @@
+#id_motorista{
+    background: #eee;
+    pointer-events: none;
+    touch-action: none;
+  }

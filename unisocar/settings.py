@@ -14,6 +14,7 @@ import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+# C:\Users\matte\Documents\WORKSPACE\App_caronas\unisocar\settings.py
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -26,11 +27,12 @@ SECRET_KEY = 'django-insecure-!#ys5@br&pz2@hl17s*u(+=1x09b6zw7(b2k7ou28j_tr-5ta+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '127.0.0.1',
+]
 
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -38,12 +40,24 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'localflavor',
+    'localflavor',  # necessario para CPFField()
     'app',
+    'crispy_forms',  # necessario para a renderizacao dos forms, junto com 'crispy_bootstrap4'
+    'crispy_bootstrap4',  # necessario para a renderizacao dos forms, junto com 'crispy_foms'
+    'debug_toolbar',  # https://django-debug-toolbar.readthedocs.io/en/latest/installation.html
+    
+    #sempre ser o ultimo
+    'django_cleanup.apps.CleanupConfig',  # https://github.com/un1t/django-cleanup
 ]
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
+
+CRISPY_TEMPLATE_PACK = "bootstrap4"
+
 
 MIDDLEWARE = [
+    'debug_toolbar.middleware.DebugToolbarMiddleware',  # https://django-debug-toolbar.readthedocs.io/en/latest/installation.html
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # https://whitenoise.readthedocs.io/en/stable/
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -57,11 +71,12 @@ ROOT_URLCONF = 'unisocar.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / "templates/registration"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
+                'django.template.context_processors.media',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
@@ -129,9 +144,28 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = BASE_DIR / 'static'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# Media files (images)
+# https://testdriven.io/blog/django-static-files/
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
+# tamanho das imagens salvas no BD
+MAX_WIDTH = 200
+MAX_HEIGHT = 200
+MAX_SIZE = (200, 200)
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# https://learndjango.com/tutorials/django-login-and-logout-tutorial
+LOGIN_REDIRECT_URL = "inicio"
+
+# configuracao do debug toolbar
+# https://django-debug-toolbar.readthedocs.io/en/latest/installation.html
+INTERNAL_IPS = [
+    '127.0.0.1',
+]

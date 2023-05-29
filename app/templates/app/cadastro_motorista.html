@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+
+{% block titulo %}
+    <title>Cadastro - Motorista</title>
+{% endblock %}
+
+
+{% block estilo %}
+    <link rel="stylesheet" href="{% static 'css/cadastro_motorista.css' %}">
+{% endblock %}
+
+
+{% block navbar %}
+  {% include "app/includes/navbar.html" with profile=profile %}
+{% endblock %}
+
+
+{% block content %}
+<div class="container">
+    <div class="container">
+        <h1 class="h3 mb-3 text-dark">Cadastre-se como Motorista!</h1>
+    </div>
+    <form class="form-signin" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        {{ motorista_form|crispy }}
+
+        <button class="btn btn-lg btn-primary" type="submit">Cadastrar-se</button>
+    </form>
+</div>
+{% endblock %}
+
+
+{% block javascript %}
+<script>
+    const foto_motorista = document.getElementById("id_foto_motorista");
+    foto_motorista.setAttribute("required", "");
+
+    const foto_carro = document.getElementById("id_foto_carro");
+    foto_carro.setAttribute("required", "");
+
+    const foto_cnh = document.getElementById("id_foto_cnh");
+    foto_cnh.setAttribute("required", "");
+</script>
+{% endblock %}

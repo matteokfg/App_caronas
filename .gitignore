@@ -1,4 +1,14 @@
 
 # Ignora venv local
 venv/
+
+# Ignora cache gerado pelo django
+__pycache__
+
+# Ignora o conector do banco de dados
 mysqlclient-1.4.6-cp38-cp38-win32.whl
+
+# Ignora arquivos de uploads de usuarios
+media/uploads/foto_carro
+media/uploads/foto_motorista
+media/uploads/foto_documento_cnh

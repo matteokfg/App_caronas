@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+
+{% block titulo %}
+  <title>Cadastro - Passageiro</title>
+{% endblock %}
+
+
+{% block estilo %}
+  <link rel="stylesheet" href="{% static 'css/cadastro_passageiro.css' %}">
+{% endblock %}
+
+
+{% block content %}
+<div class="container">
+  <div class="container">
+    <h1 class="h3 mb-3 text-dark">Continue seu cadastro como Passageiro!</h1>
+  </div>
+  <form class="form-sigin" method="post">
+      {% csrf_token %}
+
+      {{ profile_form|crispy }}
+
+      <button class="btn btn-lg btn-primary" type="submit">Cadastrar</button>
+  </form>
+</div>
+{% endblock %}
+

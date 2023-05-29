@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block titulo %}
+  <title>UnisoCar</title>
+{% endblock %}
+
+{% block estilo %}
+  <link rel="stylesheet" href="{% static 'css/index.css' %}">
+{% endblock %}
+
+{% block navbar %}
+<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-color">
+  <a class="navbar-brand" href="{% url 'index' %}">UnisoCar</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="collapsibleNavbar">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link font-weight-bold" href="{% url 'login' %}">Login</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link font-weight-bold" href="{% url 'cadastro' %}">Cadastre-se</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+{% endblock %}
+
+{% block jumbotron_index %}
+<div class="jumbotron jumbotron-fluid">
+  <div class="container">
+    <h1 class="display-4">Seja bem-vindo ao UnisoCar!</h1><br>
+    <p class="lead">Encontre ou ofereça <b>caronas solidárias.</b></p>
+  </div>
+</div>
+{% endblock %}
+
+{% block content %}
+  <!-- Mensagens de marketing
+      ================================================== -->
+  <!-- Envolve o resto da página em outro container, para centralizar todo o conteúdo. -->
+  <div class="container marketing">
+    <hr class="featurette-divider">
+
+    <div class="row featurette">
+      <div class="col-md-7">
+        <h2 class="featurette-heading">Encontre ou ofereça caronas solidárias. Supreendente, não?!</h2>
+        <p class="lead">O UnisoCar tem como objetivo facilitar o dia a dia de alunos e funcionários da Universidade! </p>
+      </div>
+      <div class="col-md-5">
+        <img class="featurette-image img-fluid mx-auto" data-src="holder.js/500x500/auto" alt="500x500"
+          style="width: 500px; height: 500px;"
+          src="{% static 'img/foto_ilustrativa.jpeg' %}"
+          data-holder-rendered="true">
+      </div>
+    </div>
+
+    <hr class="featurette-divider">
+
+    <div class="row featurette">
+      <div class="col-md-7 order-md-2">
+        <h2 class="featurette-heading">Adicione caronas agora mesmo!</h2>
+        <p class="lead">O que você está esperando? Vem fazer parte do UnisoCar e ofereça uma carona solidária.</p>
+      </div>
+      <div class="col-md-5 order-md-1">
+        <img class="featurette-image img-fluid mx-auto" data-src="holder.js/500x500/auto" alt="500x500"
+          src="add-carona.jpg"
+          data-holder-rendered="true" style="width: 500px; height: 500px;">
+      </div>
+    </div>
+
+    <hr class="featurette-divider">
+
+    <div class="row featurette">
+      <div class="col-md-7">
+        <h2 class="featurette-heading">Realize corridas tranquilamente com UnisoCar!</h2>
+        <p class="lead">Não se preocupe, o UnisoCar é destinado exclusivamente para pessoas vinculadas a Universidade de Sorocaba e conta com a opção de botão do pânico, corridas exclusivas para o sexo feminino e muito mais!</p>
+      </div>
+      <div class="col-md-5">
+        <img class="featurette-image img-fluid mx-auto" data-src="holder.js/500x500/auto" alt="500x500"
+          src="foto3.jpg"
+          data-holder-rendered="true" style="width: 500px; height: 500px;">
+      </div>
+    </div>
+
+    <hr class="featurette-divider">
+  </div><!-- /.container -->
+{% endblock %}
