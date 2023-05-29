@@ -32,3 +32,17 @@
     </form>
 </div>
 {% endblock %}
+
+
+{% block javascript %}
+<script>
+    const foto_motorista = document.getElementById("id_foto_motorista");
+    foto_motorista.setAttribute("required", "");
+
+    const foto_carro = document.getElementById("id_foto_carro");
+    foto_carro.setAttribute("required", "");
+
+    const foto_cnh = document.getElementById("id_foto_cnh");
+    foto_cnh.setAttribute("required", "");
+</script>
+{% endblock %}
