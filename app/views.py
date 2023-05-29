@@ -135,7 +135,7 @@ def adicionar_carona(request):
     profile = Profile.objects.get(user_id= request.user.id)
     motorista = Motorista.objects.get(profile_id=profile.id)
 
-    if not (motorista.foto_motorista):
+    if not (bool(motorista.foto_motorista) != False):
         return HttpResponseRedirect(reverse('caronas_disponiveis'))
 
     motorista = Motorista.objects.get(profile_id=profile.id)
@@ -160,7 +160,7 @@ def adicionar_localizacao(request):
     profile = Profile.objects.get(user_id= request.user.id)
     motorista = Motorista.objects.get(profile_id=profile.id)
 
-    if not (motorista.foto_motorista):
+    if not (bool(motorista.foto_motorista) != False):
         return HttpResponseRedirect(reverse('caronas_disponiveis'))
 
     if request.method == 'POST':
