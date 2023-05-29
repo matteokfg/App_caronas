@@ -111,6 +111,9 @@ def cadastro_motorista(request):
     profile = Profile.objects.get(user_id=request.user.id)
     motorista = Motorista.objects.get(profile_id=profile.id)
 
+    if motorista.foto_motorista:
+        return HttpResponseRedirect(reverse('caronas_disponiveis'))
+
     if request.method == 'POST':
         motorista_form = MotoristaForm(request.POST, instance=motorista)
 
