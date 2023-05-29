@@ -1,3 +1,4 @@
+from typing import Any
 from django.db import models
 from django.conf import settings
 from django.utils import timezone
@@ -7,7 +8,28 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 # field do cpf no banco de dados no django
 from localflavor.br.models import BRCPFField
-# arquivo que contem as tabelas do banco em modo orientacao a objetos do python/django
+# modificador de nome da imagem
+from django.utils.deconstruct import deconstructible
+import uuid
+import os
+# modificador de tamanho da imagem
+from PIL import Image
+
+@deconstructible
+class DynamicUploadTo():
+    def __init__(self, upload_to):
+        self.upload_to = upload_to
+
+    def __call__(self, instance, filename):
+        generated_uuid = uuid.uuid4()
+        extension = filename.split('.')[-1]
+        new_filename = f"{generated_uuid}.{extension}"
+        return os.path.join(self.upload_to, new_filename)
+
+Motorista_foto_motorista_upload_to = DynamicUploadTo("uploads/foto_motorista/")
+Motorista_foto_carro_upload_to = DynamicUploadTo("uploads/foto_carro/")
+Motorista_foto_cnh_upload_to = DynamicUploadTo("uploads/foto_documento_cnh/")
+
 
 #<---------------------------------- model user ------------------------------------------>
 
@@ -16,7 +38,7 @@ class Profile(models.Model):
     # faz a relacao de um para um entre o model inicial do django de usuarios com esse que adiciona mais campos relacionados ao usuario
     user = models.OneToOneField(
         User, 
-        on_delete=models.PROTECT,
+        on_delete=models.CASCADE,
         related_name="profile",
         verbose_name="Usuário",
         help_text="Chave estrangeira conectando o usuário do django ao perfil do usuário.",
@@ -77,28 +99,28 @@ class Motorista(models.Model):
 
     profile = models.OneToOneField(
         Profile,
-        on_delete=models.PROTECT,
+        on_delete=models.CASCADE,
         related_name="motorista",
         verbose_name="ID",
         help_text="Coluna com o id do usuário, que é o motorista.",
     )
 
     foto_motorista = models.ImageField(
-        upload_to="uploads/foto_motorista/",
+        upload_to=Motorista_foto_motorista_upload_to,
         blank=True,
         null=True,
         verbose_name="Sua foto:",
     )
 
     foto_carro = models.ImageField(
-        upload_to="uploads/foto_carro/",
+        upload_to=Motorista_foto_carro_upload_to,
         blank=True,
         null=True,
         verbose_name="Foto do carro da carona:",
     )
 
     foto_cnh = models.ImageField(
-        upload_to="uploads/foto_documento_cnh/",
+        upload_to=Motorista_foto_cnh_upload_to,
         blank=True,
         null=True,
         verbose_name="Foto da sua CNH:",
@@ -119,9 +141,42 @@ def create_user_motorista(sender, instance, created, **kwargs):
     if created:
         Motorista.objects.create(profile=instance)
 # lugar aonde vi essas funcoes: https://simpleisbetterthancomplex.com/tutorial/2016/07/22/how-to-extend-django-user-model.html#onetoone
-@receiver(post_save, sender=Profile)
-def save_user_motorista(sender, instance, **kwargs):
-    instance.motorista.save()
+
+
+# Referencia https://stackoverflow.com/a/56110972
+@receiver(post_save, sender=Motorista)
+def resize_images(sender, instance, **kwargs):                                          # funcao para redimensionar os campos de imagem, depois de salvos no BD e no disco
+    fields_to_resize = {                                                                # dicionario contendo os tres campos de imagefield, de Motorista, e cada um tem seu valor a ser redimensionado
+        'foto_motorista': {
+            'max_width': 200,
+            'max_height': 200,
+        },
+        'foto_carro': {
+            'max_width': 400,
+            'max_height': 400,
+        },
+        'foto_cnh': {
+            'max_width': 400,
+            'max_height': 400,
+        },
+    }
+
+    for fieldname, image_sizes in fields_to_resize.items():                             # loop for para cada item do dicionario a cima
+        imagefield = getattr(instance, fieldname)                                       # acessando o campo pela string fieldname
+
+        if not isinstance(imagefield, models.ImageField):                               # verifica se o campo é um imagefield
+            break
+
+        image_max_width = image_sizes.get('max_width', settings.MAX_WIDTH)              # tenta pegar o valor do dicionario, senao conseguir, pegar o valor das settings
+        image_max_height = image_sizes.get('max_height', settings.MAX_HEIGHT)           # tenta pegar o valor do dicionario, senao conseguir, pegar o valor das settings
+
+        if imagefield and ((imagefield.width > image_max_width) or (imagefield.height > image_max_height)):  # verifica se o campo nao eh nulo, e se ultrapassa algum limite
+            img = Image.open(imagefield.path)
+            img.thumbnail((image_max_width, image_max_height))                          # redimenciona a imagem
+            img.save(imagefield.path, quality=95)                                       # salva, com a qualidade em 95%
+            img.close()                                                                 # fecha o objeto
+
+
 #<---------------------------------- fim model motorista --------------------------------->
 #<---------------------------------- inicio model localizacao----------------------------->
 class Localizacao(models.Model):

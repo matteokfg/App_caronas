@@ -23,7 +23,11 @@
     <h2 class="text-dark">ADICIONAR CARONA</h2>
     <br>
     <div class="thumbnail-container">
-      <img src="{{ motorista.foto_motorista.url }}" alt="Foto de perfil" class="img-thumbnail thumbnail-image"/>
+      {% if motorista.foto_motorista %}
+        <img src="{{ motorista.foto_motorista.url }}" alt="Foto de perfil" class="img-thumbnail thumbnail-image"/>
+      {% else %}
+        <img src="{% static 'img/foto_em_branco.png' %}" alt="Foto de perfil" class="img-thumbnail thumbnail-image"/>
+      {% endif %}
     </div>
     <a href="{% url 'adicionar_localizacao' %}" class="btn btn-secondary" style="position: absolute; right: 310px; top: 300px">Adicionar localização</a>
     <form method="post">
@@ -42,5 +46,12 @@
 
 
 {% block javascript %}
-  <script src="{% static 'js/adicionar_carona.js' %}"></script>
+  <script>
+    var opcoes = document.getElementById("id_motorista").options;
+    for (var i = 0; i < opcoes.length; i++) {
+      if (opcoes[i].value == "{{ motorista.id }}") {
+        opcoes[i].selected = true;
+      }
+    }
+  </script>
 {% endblock %}
