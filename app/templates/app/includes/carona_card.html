@@ -1,4 +1,6 @@
 {% load static %}
+
+<!-- INICIO DO CARD -->
 <div class="col-md-4">
   <div class="card mb-4 shadow-sm" style="width: 18rem;">
       {% if carona.motorista.foto_motorista %}
@@ -19,8 +21,9 @@
       </div>
   </div>
 </div>
+<!-- FIM DO CARD -->
 
-<!-- Modal -->
+<!-- SE APERTAR O BOTAO 'DETALHES' DA CARONA, CHAMA ESSE MODAL -->
 <div class="modal fade" id="detalhes{{ carona.id }}" tabindex="-1" role="dialog" aria-labelledby="detalhesModal" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -41,7 +44,9 @@
       </div>
     </div>
 </div>
+<!-- FIM DO MODAL -->
 
+<!-- SE APERTAR O BOTAO 'SOLICITAR' DA CARONA, CHAMA ESSE MODAL -->
 <div class="modal fade" id="solicitar{{ carona.id }}" tabindex="-1" role="dialog" aria-labelledby="solicitarModal" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -60,3 +65,4 @@
       </div>
     </div>
 </div>
+<!-- FIM DO MODAL -->

@@ -1,3 +1,4 @@
+<!-- NAVBAR -->
 <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-color">
     <a class="navbar-brand" href="{% url 'index' %}">UnisoCar</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
@@ -6,18 +7,22 @@
     <div class="collapse navbar-collapse justify-content-end" id="collapsibleNavbar">
         <ul class="navbar-nav ml-auto">
             {% if request.user.is_authenticated %}
+                <!-- APARECE SE TIVER FEITO LOGIN -->
                 <li class="nav-item">
                     <a class="nav-link font-weight-bold" href="{% url 'caronas_disponiveis' %}">Caronas Disponíveis</a>
                 </li>
                 {% if profile.eh_motorista %}
+                    <!-- APARECE SE FOR MOTORISTA -->
                     <li class="nav-item">
                         <a class="nav-link font-weight-bold" href="{% url 'adicionar_carona' %}">Adicionar Carona</a>
                     </li>
                 {% else %}
+                    <!-- APARECE SE NAO FOR MOTORISTA -->
                     <li class="nav-item">
                         <a class="nav-link font-weight-bold" href="{% url 'cadastro_ser_motorista' %}">Cadastro como Motorista</a>
                     </li>
                 {% endif %}
+                <!-- APARECE SE TIVER FEITO LOGIN -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle font-weight-bold" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         Minha Conta
@@ -30,6 +35,7 @@
                     </div>
                 </li>
             {% else %}
+                <!-- APARECE SE NAO TIVER FEITO LOGIN -->
                 <li class="nav-item">
                     <a class="nav-link font-weight-bold" href="{% url 'login' %}">Login</a>
                 </li>
@@ -40,10 +46,4 @@
         </ul>
     </div>
 </nav>
-
-
-
-
-
-
-
+<!-- FIM DA NAVBAR -->
