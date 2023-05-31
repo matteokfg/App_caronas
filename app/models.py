@@ -15,6 +15,8 @@ import os
 # modificador de tamanho da imagem
 from PIL import Image
 
+
+# modificador do nome da imagem para um codigo unico
 @deconstructible
 class DynamicUploadTo():
     def __init__(self, upload_to):
@@ -26,6 +28,7 @@ class DynamicUploadTo():
         new_filename = f"{generated_uuid}.{extension}"
         return os.path.join(self.upload_to, new_filename)
 
+# modificador para cada tipo de imagem do Motorista
 Motorista_foto_motorista_upload_to = DynamicUploadTo("uploads/foto_motorista/")
 Motorista_foto_carro_upload_to = DynamicUploadTo("uploads/foto_carro/")
 Motorista_foto_cnh_upload_to = DynamicUploadTo("uploads/foto_documento_cnh/")
@@ -34,16 +37,17 @@ Motorista_foto_cnh_upload_to = DynamicUploadTo("uploads/foto_documento_cnh/")
 #<---------------------------------- model user ------------------------------------------>
 
 class Profile(models.Model):
-    # Extensao do usuario padrao ja existente no django
-    # faz a relacao de um para um entre o model inicial do django de usuarios com esse que adiciona mais campos relacionados ao usuario
+    """Extensao do usuario padrao ja existente no django.
+       Faz a relacao de um para um entre o model inicial do django de usuarios com esse que adiciona mais campos relacionados ao usuario."""
+
     user = models.OneToOneField(
         User, 
-        on_delete=models.CASCADE,
-        related_name="profile",
+        on_delete=models.CASCADE,  # se apagar o user, vai apagar o profile
+        related_name="profile",  # com profile, consigo os dados do user, sem querys extras no BD
         verbose_name="Usuário",
         help_text="Chave estrangeira conectando o usuário do django ao perfil do usuário.",
     )
-
+    # campo do CPF
     cpf_user = BRCPFField(
         verbose_name="CPF",
         help_text="Coluna com CPF do usuário.",
@@ -82,7 +86,7 @@ class Profile(models.Model):
     def __str__(self):
         return self.user.username
 
-# a tabela Profile vai ser atualizada automaticamente quando o User for atualizado
+# a tabela Profile vai ser criada/atualizada automaticamente quando o User for criado/atualizado
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
@@ -96,11 +100,12 @@ def save_user_profile(sender, instance, **kwargs):
 #<---------------------------------- model motorista ------------------------------------->
 
 class Motorista(models.Model):
+    """Tabela do Motorista, model de Motorista, caso o usuario seja motorista, deverá preencher esses dados."""
 
-    profile = models.OneToOneField(
+    profile = models.OneToOneField(  # relacao com o Profile
         Profile,
-        on_delete=models.CASCADE,
-        related_name="motorista",
+        on_delete=models.CASCADE,  # se apagar profile, apaga motorista
+        related_name="motorista",  # consegue dados de profile, sem queries extras
         verbose_name="ID",
         help_text="Coluna com o id do usuário, que é o motorista.",
     )
@@ -135,7 +140,7 @@ class Motorista(models.Model):
 
     def __str__(self):
         return str(self.profile)
-
+# se criar Profile, cria Motorista
 @receiver(post_save, sender=Profile)
 def create_user_motorista(sender, instance, created, **kwargs):
     if created:
@@ -144,6 +149,7 @@ def create_user_motorista(sender, instance, created, **kwargs):
 
 
 # Referencia https://stackoverflow.com/a/56110972
+# depois que salvar no banco de dados as imagens, altera elas para terem um tamanho menor, para ocupar menos espaco no HD
 @receiver(post_save, sender=Motorista)
 def resize_images(sender, instance, **kwargs):                                          # funcao para redimensionar os campos de imagem, depois de salvos no BD e no disco
     fields_to_resize = {                                                                # dicionario contendo os tres campos de imagefield, de Motorista, e cada um tem seu valor a ser redimensionado
@@ -180,7 +186,7 @@ def resize_images(sender, instance, **kwargs):                                  
 #<---------------------------------- fim model motorista --------------------------------->
 #<---------------------------------- inicio model localizacao----------------------------->
 class Localizacao(models.Model):
-    """Tabela que vai guardar as localizacoes utilizadas nas caronas, vai ser populada pela Google Maps API."""
+    """Tabela que vai guardar as localizacoes utilizadas nas caronas."""
 
     latitude = models.DecimalField(
         max_digits=11,
@@ -197,7 +203,7 @@ class Localizacao(models.Model):
     )
 
     def __str__(self):
-        # metodo retorna coordenadas
+        # metodo retorna coordenadas, quado mostrar o objeto nas telas
         return f"{self.latitude} e {self.longitude}"
 #<---------------------------------- fim model localizacao-------------------------------->
 #<---------------------------------- model carona ---------------------------------------->
@@ -205,10 +211,10 @@ class Localizacao(models.Model):
 class Carona(models.Model):
     """Tabela que vai guardar os atributos do evento da carona"""
 
-    motorista = models.ForeignKey(
+    motorista = models.ForeignKey(  # faz relacao com motorista
         Motorista,
-        on_delete=models.PROTECT,
-        related_name="carona",
+        on_delete=models.PROTECT,  # se apagar o motorista, protege os dados da tabela Carona
+        related_name="carona",  # consegue os dados de motorista, sem queries extras
         verbose_name="Usuario",
         help_text="Coluna com o motorista da carona.",
     )
@@ -240,7 +246,7 @@ class Carona(models.Model):
         MAIS_QUATRO = 4,
         MAIS_CINCO = 5,
         MAIS_SEIS = 6,
-
+    # loatacao da carona
     lotation = models.IntegerField(
         choices=Lotacao.choices,
         default=Lotacao.MAIS_TRES,
