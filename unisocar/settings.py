@@ -153,9 +153,9 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 # tamanho das imagens salvas no BD
-MAX_WIDTH = 200
-MAX_HEIGHT = 200
-MAX_SIZE = (200, 200)
+MAX_WIDTH = 500
+MAX_HEIGHT = 500
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

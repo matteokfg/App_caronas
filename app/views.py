@@ -23,7 +23,7 @@ def inicio_index(request):
 # view de cadastro do usuario
 def cadastro(request):
     if request.user.is_authenticated:                                   # verifica se a sessão é de um usuario logado
-        return HttpResponseRedirect(reverse('caronas_disponiveis'))     # se for, permite que ele entre na pagina de cadastro, redirecionando para a tela de caronas disponiveis
+        return HttpResponseRedirect(reverse('caronas_disponiveis'))     # se for, nao permite que ele entre na pagina de cadastro, redirecionando para a tela de caronas disponiveis
 
     user_form = UserForm(request.POST or None)                          # cria a um objeto da classe UserForm, se for um POST do form, cria usando os dados do formulario, senao, cria um vazio
     # passa o objeto form como contexto
