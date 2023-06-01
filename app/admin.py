@@ -32,8 +32,6 @@ class MotoristaAdmin(admin.ModelAdmin):
             height=obj.foto_cnh.height,
             )
     )
-    # pass
-    
 
 
 admin.site.register(Profile)
