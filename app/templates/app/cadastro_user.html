@@ -29,7 +29,7 @@
 
                 <div class="checkbox mb-3">
                     <label>
-                      <input type="checkbox" value="termos" required> Li e estou de acordo com o <a href="">Termo de Uso e Política de Privacidade</a> 
+                      <input type="checkbox" value="termos" required> Li e estou de acordo com o <a href="{% static 'docs/POLITICAS_DE_PRIVACIDADE_UNISOCAR.pdf' %}">Termo de Uso e Política de Privacidade</a> 
                     </label>
                 </div>
                 <button type="submit" class="btn btn-primary btn-lg">Cadastrar</button>
@@ -42,7 +42,7 @@
           <div class="row w-100">
             <div class="col-12 text-center">
               <div class="d-flex justify-content-center">
-                <p class="text-white">&copy; 2023 - Unisocar - <a href="#" class="termos">Privacidade</a> - <a href="#" class="termos">Termos</a></p>
+                <p class="text-white">&copy; 2023 - Unisocar - <a href="{% static 'docs/POLITICAS_DE_PRIVACIDADE_UNISOCAR.pdf' %}" class="termos">Privacidade</a> - <a href="{% static 'docs/TERMOS_E_CONDICOES_GERAIS_DE_USO_UNISOCAR.pdf' %}" class="termos">Termos</a></p>
               </div>
             </div>
           </div>
